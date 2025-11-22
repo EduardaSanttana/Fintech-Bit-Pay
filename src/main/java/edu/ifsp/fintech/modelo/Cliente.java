@@ -1,18 +1,18 @@
-package modelo;
+package edu.ifsp.fintech.modelo;
 
-public class Colaborador {
-	private int id;
+public class Cliente {
+    private int id;
     private String nome;
     private String email;
     private String senha;
     private String cpf;
     private String endereco;
     private String telefone;
-    private String funcao;
+    private String tipoConta;
     
-    public Colaborador() {}
+    public Cliente() {}
     
-    public Colaborador(int id, String nome, String email, String senha, String cpf, String endereco, String telefone, String funcao) {
+    public Cliente(int id, String nome, String email, String senha, String cpf, String endereco, String telefone, String tipoConta) {
         this.id = id;
         this.nome = nome;
         this.email = email;
@@ -20,7 +20,7 @@ public class Colaborador {
         this.endereco = endereco;
         this.cpf = cpf;
         this.telefone = telefone;
-        this.funcao = funcao;
+        this.tipoConta = tipoConta;
     }
 
     public int getId() {
@@ -77,14 +77,14 @@ public class Colaborador {
 
 	public void setTelefone(String telefone) {
 		this.telefone = telefone;
-	} 
-	
-	public String getFuncao() {
-		return funcao;
 	}
 
-	public void setFuncao(String funcao) {
-		this.funcao = funcao;
+	public String getTipoConta() {
+		return tipoConta;
+	}
+
+	public void setTipoConta(String tipoConta) {
+		this.tipoConta = tipoConta;
 	}   
 
 }
