@@ -1,4 +1,4 @@
-package persistencia;
+package edu.ifsp.fintech.persistencia;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,11 +7,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import modelo.Cliente;
+import edu.ifsp.fintech.modelo.Cliente;
 
 public class ClienteDAO {
 
-    // --- INSERIR CLIENTE ---
     public void inserir(Cliente c) throws SQLException {
         String sql = "INSERT INTO CLIENTES (NOME, EMAIL, SENHA, CPF, ENDERECO, TELEFONE) "
                    + "VALUES (?, ?, ?, ?, ?, ?)";

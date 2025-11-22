@@ -1,4 +1,4 @@
-package persistencia;
+package edu.ifsp.fintech.persistencia;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -15,7 +15,7 @@ public class ConexaoBD {
 
     public static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(
-            "jdbc:mysql://localhost:3307/BITPAY",
+            "jdbc:mysql://localhost:3306/BITPAY",
             "root",
             "root"
         );
