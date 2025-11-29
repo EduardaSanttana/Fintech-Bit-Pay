@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import edu.ifsp.fintech.modelo.Conta;
+import edu.ifsp.fintech.modelo.Extrato;
 
 public class ContaDAO {
 
@@ -229,4 +230,76 @@ public class ContaDAO {
 
         return true;
     }
+    
+    public boolean sacarPorNumeroConta(String numeroConta, double valor) throws SQLException {
+        if (valor <= 0) {
+            throw new IllegalArgumentException("Valor de saque deve ser maior que zero.");
+        }
+
+        String sqlSelect = "SELECT ID, SALDO FROM CONTAS WHERE NUMERO_CONTA = ? FOR UPDATE";
+        String sqlUpdate = "UPDATE CONTAS SET SALDO = ? WHERE NUMERO_CONTA = ?";
+
+        Connection conn = null;
+
+        try {
+            conn = ConexaoBD.getConnection();
+            conn.setAutoCommit(false);
+
+            int contaId;
+            double saldoAtual;
+
+            // 1 — Buscar saldo com lock
+            try (PreparedStatement psSelect = conn.prepareStatement(sqlSelect)) {
+                psSelect.setString(1, numeroConta);
+                try (ResultSet rs = psSelect.executeQuery()) {
+
+                    if (!rs.next()) {
+                        conn.rollback();
+                        return false;
+                    }
+
+                    contaId = rs.getInt("ID");
+                    saldoAtual = rs.getDouble("SALDO");
+                }
+            }
+
+            // 2 — Verificar saldo insuficiente
+            if (saldoAtual < valor) {
+                conn.rollback();
+                return false;
+            }
+
+            double novoSaldo = saldoAtual - valor;
+
+            // 3 — Atualizar saldo
+            try (PreparedStatement psUpdate = conn.prepareStatement(sqlUpdate)) {
+                psUpdate.setDouble(1, novoSaldo);
+                psUpdate.setString(2, numeroConta);
+                psUpdate.executeUpdate();
+            }
+
+            // 4 — Registrar extrato
+            ExtratoDAO extratoDAO = new ExtratoDAO();
+            extratoDAO.registrar(
+                new Extrato(contaId, "SAQUE", valor, "Saque realizado da conta " + numeroConta)
+            );
+
+            conn.commit();
+            return true;
+
+        } catch (SQLException e) {
+
+            if (conn != null) conn.rollback();
+            throw e;
+
+        } finally {
+
+            if (conn != null) {
+                conn.setAutoCommit(true);
+                conn.close();
+            }
+        }
+    }
 }
+
+
