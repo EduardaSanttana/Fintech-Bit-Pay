@@ -12,9 +12,6 @@ public class ContaDAO {
 
     private ExtratoDAO extratoDAO = new ExtratoDAO();
 
-    // ------------------------------------------------------------
-    // GERA NÚMERO DA CONTA
-    // ------------------------------------------------------------
     private String gerarNumeroConta() throws SQLException {
         String sql = "SELECT COUNT(*) AS quant_contas FROM contas";
         try (Connection conn = ConexaoBD.getConnection();
@@ -29,9 +26,6 @@ public class ContaDAO {
         }
     }
 
-    // ------------------------------------------------------------
-    // ABRIR CONTA
-    // ------------------------------------------------------------
     public void abrirConta(int clienteId, String tipoConta) throws SQLException {
         String numeroConta = gerarNumeroConta();
         String sql = "INSERT INTO contas (CLIENTE_ID, NUMERO_CONTA, SALDO, TIPO) VALUES (?, ?, ?, ?)";
@@ -48,9 +42,6 @@ public class ContaDAO {
         }
     }
 
-    // ------------------------------------------------------------
-    // BUSCAR CLIENTE POR NOME + CPF
-    // ------------------------------------------------------------
     public int buscarClienteId(String nome, String cpf) throws SQLException {
         String sql = "SELECT ID FROM clientes WHERE NOME = ? AND CPF = ?";
         try (Connection conn = ConexaoBD.getConnection();
@@ -66,9 +57,6 @@ public class ContaDAO {
         }
     }
 
-    // ------------------------------------------------------------
-    // BUSCAR CONTA PELO NÚMERO
-    // ------------------------------------------------------------
     public Conta buscarPorNumeroConta(String numeroConta) throws SQLException {
         String sql = "SELECT ID, CLIENTE_ID, NUMERO_CONTA, SALDO, TIPO FROM CONTAS WHERE NUMERO_CONTA = ?";
         try (Connection conn = ConexaoBD.getConnection();
@@ -91,9 +79,6 @@ public class ContaDAO {
         }
     }
 
-    // ------------------------------------------------------------
-    // DEPÓSITO COM REGISTRO NO EXTRATO
-    // ------------------------------------------------------------
     public boolean depositarPorNumeroConta(String numeroConta, double valor) throws SQLException {
         if (valor <= 0) {
             throw new IllegalArgumentException("Valor deve ser maior que zero.");
@@ -110,7 +95,6 @@ public class ContaDAO {
             int contaId = -1;
             double saldoAtual;
 
-            // Buscar conta
             try (PreparedStatement ps = conn.prepareStatement(sqlSelect)) {
                 ps.setString(1, numeroConta);
                 try (ResultSet rs = ps.executeQuery()) {
@@ -123,7 +107,6 @@ public class ContaDAO {
                 }
             }
 
-            // Atualizar saldo
             double novoSaldo = saldoAtual + valor;
             try (PreparedStatement ps = conn.prepareStatement(sqlUpdate)) {
                 ps.setDouble(1, novoSaldo);
@@ -131,7 +114,6 @@ public class ContaDAO {
                 ps.executeUpdate();
             }
 
-            // Registrar extrato
             extratoDAO.registrarExtrato(contaId, "DEPOSITO", valor,
                     "Depósito realizado na conta " + numeroConta);
 
@@ -149,9 +131,6 @@ public class ContaDAO {
         }
     }
 
-    // ------------------------------------------------------------
-    // SAQUE COM EXTRATO
-    // ------------------------------------------------------------
     public boolean sacar(String numeroConta, double valor) throws SQLException {
         if (valor <= 0) throw new IllegalArgumentException("Valor inválido.");
 
@@ -180,7 +159,7 @@ public class ContaDAO {
 
             if (saldoAtual < valor) {
                 conn.rollback();
-                return false; // saldo insuficiente
+                return false; 
             }
 
             double novoSaldo = saldoAtual - valor;
@@ -208,9 +187,6 @@ public class ContaDAO {
         }
     }
 
-    // ------------------------------------------------------------
-    // TRANSFERÊNCIA ENTRE CONTAS
-    // ------------------------------------------------------------
     public boolean transferir(String origem, String destino, double valor) throws SQLException {
         if (valor <= 0) throw new IllegalArgumentException("Valor inválido.");
 
@@ -248,7 +224,6 @@ public class ContaDAO {
             int contaId;
             double saldoAtual;
 
-            // 1 — Buscar saldo com lock
             try (PreparedStatement psSelect = conn.prepareStatement(sqlSelect)) {
                 psSelect.setString(1, numeroConta);
                 try (ResultSet rs = psSelect.executeQuery()) {
@@ -263,7 +238,6 @@ public class ContaDAO {
                 }
             }
 
-            // 2 — Verificar saldo insuficiente
             if (saldoAtual < valor) {
                 conn.rollback();
                 return false;
@@ -271,14 +245,12 @@ public class ContaDAO {
 
             double novoSaldo = saldoAtual - valor;
 
-            // 3 — Atualizar saldo
             try (PreparedStatement psUpdate = conn.prepareStatement(sqlUpdate)) {
                 psUpdate.setDouble(1, novoSaldo);
                 psUpdate.setString(2, numeroConta);
                 psUpdate.executeUpdate();
             }
 
-            // 4 — Registrar extrato
             ExtratoDAO extratoDAO = new ExtratoDAO();
             extratoDAO.registrar(
                 new Extrato(contaId, "SAQUE", valor, "Saque realizado da conta " + numeroConta)

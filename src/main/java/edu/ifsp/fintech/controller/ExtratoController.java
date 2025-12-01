@@ -16,7 +16,9 @@ import java.util.List;
 @WebServlet("/extrato")
 public class ExtratoController extends HttpServlet {
 
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    private static final long serialVersionUID = 1L;
+
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         String numeroConta = req.getParameter("numero");
 
@@ -26,7 +28,7 @@ public class ExtratoController extends HttpServlet {
 
             if (conta == null) {
                 req.setAttribute("erro", "Conta não encontrada!");
-                req.getRequestDispatcher("erro.jsp").forward(req, resp);
+                req.getRequestDispatcher("Erro.jsp").forward(req, resp);
                 return;
             }
 
@@ -36,7 +38,7 @@ public class ExtratoController extends HttpServlet {
             req.setAttribute("conta", conta);
             req.setAttribute("extrato", extratoList);
 
-            req.getRequestDispatcher("extrato.jsp").forward(req, resp);
+            req.getRequestDispatcher("Extrato.jsp").forward(req, resp);
 
         } catch (SQLException e) {
             throw new ServletException("Erro ao carregar extrato.", e);

@@ -16,8 +16,7 @@ public class RealizarDepositoServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // redireciona para a página do formulário
-        req.getRequestDispatcher("/paginas/deposito.jsp").forward(req, resp);
+        req.getRequestDispatcher("/paginas/Deposito.jsp").forward(req, resp);
     }
 
     @Override
@@ -27,7 +26,7 @@ public class RealizarDepositoServlet extends HttpServlet {
 
         if (numeroConta == null || numeroConta.trim().isEmpty() || valorStr == null || valorStr.trim().isEmpty()) {
             req.setAttribute("erro", "Número da conta e valor são obrigatórios.");
-            req.getRequestDispatcher("/paginas/depositoErro.jsp").forward(req, resp);
+            req.getRequestDispatcher("/paginas/DepositoErro.jsp").forward(req, resp);
             return;
         }
 
@@ -36,7 +35,7 @@ public class RealizarDepositoServlet extends HttpServlet {
             valor = Double.parseDouble(valorStr);
         } catch (NumberFormatException e) {
             req.setAttribute("erro", "Valor inválido.");
-            req.getRequestDispatcher("/paginas/depositoErro.jsp").forward(req, resp);
+            req.getRequestDispatcher("/paginas/DepositoErro.jsp").forward(req, resp);
             return;
         }
 
@@ -46,18 +45,18 @@ public class RealizarDepositoServlet extends HttpServlet {
                 req.setAttribute("mensagem", "Depósito realizado com sucesso!");
                 req.setAttribute("numeroConta", numeroConta);
                 req.setAttribute("valor", String.format("%.2f", valor));
-                req.getRequestDispatcher("/paginas/depositoSucesso.jsp").forward(req, resp);
+                req.getRequestDispatcher("/paginas/DepositoSucesso.jsp").forward(req, resp);
             } else {
                 req.setAttribute("erro", "Conta não encontrada ou atualização falhou.");
-                req.getRequestDispatcher("/paginas/depositoErro.jsp").forward(req, resp);
+                req.getRequestDispatcher("/paginas/DepositoErro.jsp").forward(req, resp);
             }
         } catch (IllegalArgumentException iae) {
             req.setAttribute("erro", iae.getMessage());
-            req.getRequestDispatcher("/paginas/depositoErro.jsp").forward(req, resp);
+            req.getRequestDispatcher("/paginas/DepositoErro.jsp").forward(req, resp);
         } catch (SQLException e) {
             e.printStackTrace();
             req.setAttribute("erro", "Erro ao acessar o banco: " + e.getMessage());
-            req.getRequestDispatcher("/paginas/depositoErro.jsp").forward(req, resp);
+            req.getRequestDispatcher("/paginas/DepositoErro.jsp").forward(req, resp);
         }
     }
 }

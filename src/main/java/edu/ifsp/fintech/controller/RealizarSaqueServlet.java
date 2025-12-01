@@ -27,14 +27,14 @@ public class RealizarSaqueServlet extends HttpServlet {
             boolean sucesso = contaDAO.sacarPorNumeroConta(numeroConta, valor);
 
             if (sucesso) {
-                response.sendRedirect("paginas/saqueSucesso.jsp");
+                response.sendRedirect("paginas/SaqueSucesso.jsp");
             } else {
-                response.sendRedirect("paginas/saqueErro.jsp");
+                response.sendRedirect("paginas/SaqueErro.jsp");
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
-            response.sendRedirect("paginas/saqueErro.jsp");
+            response.sendRedirect("paginas/SaqueErro.jsp");
         }
     }
 }

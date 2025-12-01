@@ -30,7 +30,6 @@ public class ClienteDAO {
         conn.close();
     }
 
-    // --- BUSCAR POR ID ---
     public Cliente buscarPorId(int id) throws SQLException {
         String sql = "SELECT * FROM CLIENTES WHERE ID = ?";
 
@@ -52,7 +51,6 @@ public class ClienteDAO {
         return c;
     }
 
-    // --- BUSCAR POR EMAIL (login ou recuperação) ---
     public Cliente buscarPorEmail(String email) throws SQLException {
         String sql = "SELECT * FROM CLIENTES WHERE EMAIL = ?";
 
@@ -74,7 +72,6 @@ public class ClienteDAO {
         return c;
     }
 
-    // --- VERIFICAR LOGIN ---
     public Cliente login(String email, String senha) throws SQLException {
         String sql = "SELECT * FROM CLIENTES WHERE EMAIL = ? AND SENHA = ?";
 
@@ -98,7 +95,6 @@ public class ClienteDAO {
         return c;
     }
 
-    // --- LISTAR TODOS ---
     public List<Cliente> listarTodos() throws SQLException {
         String sql = "SELECT * FROM CLIENTES";
 
@@ -120,7 +116,6 @@ public class ClienteDAO {
         return lista;
     }
 
-    // --- ATUALIZAR DADOS PESSOAIS ---
     public void atualizar(Cliente c) throws SQLException {
         String sql = "UPDATE CLIENTES SET NOME = ?, EMAIL = ?, ENDERECO = ?, TELEFONE = ? "
                    + "WHERE ID = ?";
@@ -139,7 +134,6 @@ public class ClienteDAO {
         conn.close();
     }
 
-    // --- ATUALIZAR SENHA ---
     public void atualizarSenha(int id, String novaSenha) throws SQLException {
         String sql = "UPDATE CLIENTES SET SENHA = ? WHERE ID = ?";
 
@@ -154,7 +148,6 @@ public class ClienteDAO {
         conn.close();
     }
 
-    // --- DELETAR ---
     public void deletar(int id) throws SQLException {
         String sql = "DELETE FROM CLIENTES WHERE ID = ?";
 
@@ -167,7 +160,6 @@ public class ClienteDAO {
         conn.close();
     }
 
-    // --- VERIFICAR SE EMAIL JÁ EXISTE ---
     public boolean emailExiste(String email) throws SQLException {
         String sql = "SELECT ID FROM CLIENTES WHERE EMAIL = ?";
 
@@ -187,7 +179,6 @@ public class ClienteDAO {
         return existe;
     }
 
-    // --- VERIFICAR SE CPF JÁ EXISTE ---
     public boolean cpfExiste(String cpf) throws SQLException {
         String sql = "SELECT ID FROM CLIENTES WHERE CPF = ?";
 
@@ -207,7 +198,6 @@ public class ClienteDAO {
         return existe;
     }
 
-    // --- Função privada para mapear o ResultSet em objeto Cliente ---
     private Cliente mapearCliente(ResultSet rs) throws SQLException {
         return new Cliente(
             rs.getInt("ID"),
