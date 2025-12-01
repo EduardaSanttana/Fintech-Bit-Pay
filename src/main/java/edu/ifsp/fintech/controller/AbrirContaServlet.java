@@ -30,17 +30,16 @@ public class AbrirContaServlet extends HttpServlet {
             int clienteId = dao.buscarClienteId(nome, cpf);
 
             if (clienteId == -1) {
-                // Cliente não encontrado
-                response.sendRedirect("paginas/erro.jsp");
+                response.sendRedirect("paginas/Erro.jsp");
                 return;
             }
 
             dao.abrirConta(clienteId, tipoConta);
-            response.sendRedirect("paginas/sucesso.jsp");
+            response.sendRedirect("paginas/Sucesso.jsp");
 
         } catch (SQLException e) {
             e.printStackTrace();
-            response.sendRedirect("paginas/erro.jsp");
+            response.sendRedirect("paginas/Erro.jsp");
         }
     }
 }

@@ -8,7 +8,6 @@ import edu.ifsp.fintech.modelo.Extrato;
 
 public class ExtratoDAO {
 
-    // --- REGISTRAR USANDO OBJETO ---
     public void registrar(Extrato ext) throws SQLException {
         String sql = "INSERT INTO EXTRATOS (CONTA_ID, TIPO, VALOR, DESCRICAO) VALUES (?, ?, ?, ?)";
 
@@ -24,7 +23,6 @@ public class ExtratoDAO {
         }
     }
 
-    // --- REGISTRAR DIRETO (o que o ContaDAO espera usar) ---
     public void registrarExtrato(int contaId, String tipo, double valor, String descricao) throws SQLException {
         String sql = "INSERT INTO EXTRATOS (CONTA_ID, TIPO, VALOR, DESCRICAO) VALUES (?, ?, ?, ?)";
 
@@ -40,7 +38,6 @@ public class ExtratoDAO {
         }
     }
 
-    // --- LISTAR EXTRATO DE UMA CONTA ---
     public List<Extrato> listarPorConta(int contaId) throws SQLException {
         String sql = "SELECT * FROM EXTRATOS WHERE CONTA_ID = ? ORDER BY DATA_HORA DESC";
 

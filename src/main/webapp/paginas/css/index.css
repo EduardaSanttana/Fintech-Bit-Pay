@@ -1,0 +1,48 @@
+:root {
+    --orange: #ff7a00;
+    --blue: #005b96;
+}
+
+.bg-blue {
+    background-color: var(--blue) !important;
+}
+
+.text-orange {
+    color: var(--orange) !important;
+}
+
+.text-blue {
+    color: var(--blue) !important;
+}
+
+.btn-orange {
+    background-color: var(--orange);
+    color: white;
+    border-radius: 8px;
+    padding: 10px 20px;
+    transition: .3s;
+}
+.btn-orange:hover {
+    background-color: #e86d00;
+}
+
+.hero {
+    height: 80vh;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+                url('https://images.unsplash.com/photo-1556742048-5b51b5ae2b1a?auto=format&fit=crop&w=1500&q=80') center/cover no-repeat;
+}
+
+.feature-card {
+    border: 2px solid var(--blue);
+    border-radius: 12px;
+    transition: .3s;
+}
+.feature-card:hover {
+    transform: scale(1.05);
+    border-color: var(--orange);
+}
+
+.auth-card {
+    border-radius: 15px;
+    border: 2px solid var(--blue);
+}
