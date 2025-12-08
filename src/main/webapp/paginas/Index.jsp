@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>BitPay - Dashboard</title>
+<title>Fintech Bit Pay</title>
 </head>
 <body>
 

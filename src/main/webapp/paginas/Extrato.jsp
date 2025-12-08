@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Extrato</title>
+<title>Fintech Bit Pay</title>
 </head>
 <body>
 
