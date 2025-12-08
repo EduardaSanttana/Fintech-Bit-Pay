@@ -1,40 +1,56 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java"%>
-<%@ page import="java.util.List"%>
-<%@ page import="edu.ifsp.fintech.modelo.Extrato"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.util.*, edu.ifsp.fintech.modelo.Extrato" %>
+
+<!DOCTYPE html>
 <html>
 <head>
+<meta charset="UTF-8">
 <title>Extrato</title>
 </head>
 <body>
-	<h2>Extrato</h2>
-	<form action="${pageContext.request.contextPath}/extrato" method="get">
-		ID da conta: <input type="number" name="id" required><br>
-		<button type="submit">Gerar</button>
-	</form>
-	<%
-	List<Extrato> lista = (List<Extrato>) request.getAttribute("extratos");
-	if (lista != null) {
-	%>
-	<table border="1" cellpadding="6">
-		<tr>
-			<th>Data</th>
-			<th>Tipo</th>
-			<th>Valor</th>
-			<th>Descrição</th>
-		</tr>
-		<%
-		for (Extrato e : lista) {
-		%>
-		<tr>
-			<td><%=e.getDataHora()%></td>
-			<td><%=e.getTipo()%></td>
-			<td><%=e.getValor()%></td>
-			<td><%=e.getDescricao()%></td>
-		</tr>
-		<%
-		}
-		%>
-	</table>
-	<% } %>
+
+<h2>Extrato Bancário</h2>
+
+<table border="1">
+<tr>
+    <th>Data</th>
+    <th>Tipo</th>
+    <th>Valor</th>
+    <th>Descrição</th>
+</tr>
+
+<%
+List<Extrato> lista = (List<Extrato>) request.getAttribute("extratos");
+
+if (lista != null) {
+    for (Extrato e : lista) {
+%>
+<tr>
+    <td><%= e.getDataHora() %></td>
+    <td><%= e.getTipo() %></td>
+    <td>R$ <%= e.getValor() %></td>
+    <td><%= e.getDescricao() %></td>
+</tr>
+
+<%
+    }
+} else {
+%>
+<tr>
+    <td colspan="4" style="color:red;">Nenhum extrato encontrado.</td>
+</tr>
+<%
+}
+%>
+
+</table>
+
+<br>
+
+<a href="../extrato?pdf=1">Baixar PDF</a>
+<br><br>
+
+<a href="Index.jsp">Voltar</a>
+
 </body>
 </html>

@@ -1,212 +1,123 @@
 package edu.ifsp.fintech.persistencia;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.math.BigDecimal;
+import java.sql.*;
+
 import edu.ifsp.fintech.modelo.Conta;
 
 public class ContaDAO {
 
-    private ExtratoDAO extratoDAO = new ExtratoDAO();
+	private Connection getConnection() throws Exception {
+	    return ConexaoBD.getConnection();
+	}
 
-    private String gerarNumeroConta() throws SQLException {
-        String sql = "SELECT COUNT(*) AS total FROM contas";
-        try (Connection conn = ConexaoBD.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
-            int total = 0;
-            if (rs.next()) total = rs.getInt("total");
-            return "2025" + String.format("%05d", total + 1);
+
+    public void criarConta(int usuarioId) throws Exception {
+        String sql = "INSERT INTO CONTAS (USUARIO_ID, NUMERO_CONTA, SALDO) VALUES (?, ?, 0.00)";
+
+        try (Connection con = getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            String numero = "BIT" + (int)(Math.random() * 999999);
+
+            ps.setInt(1, usuarioId);
+            ps.setString(2, numero);
+
+            ps.executeUpdate();
         }
     }
 
-    // AGORA RETORNA O NÚMERO DA CONTA
-    public String abrirConta(int clienteId, String tipoConta) throws SQLException {
-        String numeroConta = gerarNumeroConta();
-        String sql = "INSERT INTO contas (cliente_id, numero_conta, saldo, tipo) VALUES (?, ?, ?, ?)";
+    public Conta buscarPorUsuario(int usuarioId) throws Exception {
+        String sql = "SELECT * FROM CONTAS WHERE USUARIO_ID=?";
 
-        try (Connection conn = ConexaoBD.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection con = getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
 
-            stmt.setInt(1, clienteId);
-            stmt.setString(2, numeroConta);
-            stmt.setDouble(3, 0.0);
-            stmt.setString(4, tipoConta);
-            stmt.executeUpdate();
-        }
+            ps.setInt(1, usuarioId);
 
-        return numeroConta;
-    }
+            ResultSet rs = ps.executeQuery();
 
-    public Conta buscarPorNumeroConta(String numeroConta) throws SQLException {
-        String sql = "SELECT id, cliente_id, numero_conta, saldo, tipo FROM contas WHERE numero_conta = ?";
-        try (Connection conn = ConexaoBD.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, numeroConta);
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    return new Conta(
-                        rs.getInt("id"),
-                        rs.getInt("cliente_id"),
-                        rs.getString("numero_conta"),
-                        rs.getDouble("saldo"),
-                        rs.getString("tipo")
-                    );
-                }
-                return null;
+            if (rs.next()) {
+                Conta c = new Conta();
+                c.setId(rs.getInt("ID"));
+                c.setUsuarioId(rs.getInt("USUARIO_ID"));
+                c.setNumeroConta(rs.getString("NUMERO_CONTA"));
+                c.setSaldo(rs.getBigDecimal("SALDO"));
+                return c;
             }
+        }
+        return null;
+    }
+    
+    public void atualizarSaldo(int contaId, BigDecimal novoSaldo) throws Exception {
+        String sql = "UPDATE CONTAS SET SALDO=? WHERE ID=?";
+        
+        try (Connection con = getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setBigDecimal(1, novoSaldo);
+            ps.setInt(2, contaId);
+            ps.executeUpdate();
         }
     }
 
-    public boolean depositarPorNumeroConta(String numeroConta, double valor) throws SQLException {
-        if (valor <= 0) throw new IllegalArgumentException("Valor deve ser maior que zero.");
+    public Conta buscarPorId(int contaId) throws Exception {
+        String sql = "SELECT * FROM CONTAS WHERE ID=?";
 
-        String sqlSelect = "SELECT id, saldo FROM contas WHERE numero_conta = ? FOR UPDATE";
-        String sqlUpdate = "UPDATE contas SET saldo = ? WHERE id = ?";
+        try (Connection con = getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
 
-        Connection conn = null;
-        try {
-            conn = ConexaoBD.getConnection();
-            conn.setAutoCommit(false);
+            ps.setInt(1, contaId);
 
-            int contaId;
-            double saldoAtual;
+            ResultSet rs = ps.executeQuery();
 
-            try (PreparedStatement ps = conn.prepareStatement(sqlSelect)) {
-                ps.setString(1, numeroConta);
-                try (ResultSet rs = ps.executeQuery()) {
-                    if (!rs.next()) { conn.rollback(); return false; }
-                    contaId = rs.getInt("id");
-                    saldoAtual = rs.getDouble("saldo");
-                }
+            if (rs.next()) {
+                Conta c = new Conta();
+                c.setId(rs.getInt("ID"));
+                c.setUsuarioId(rs.getInt("USUARIO_ID"));
+                c.setNumeroConta(rs.getString("NUMERO_CONTA"));
+                c.setSaldo(rs.getBigDecimal("SALDO"));
+                return c;
             }
+        }
+        return null;
+    }
+    
+    public Conta buscarPorNumero(String numeroConta) throws Exception {
+        String sql = "SELECT * FROM CONTAS WHERE NUMERO_CONTA=?";
 
-            double novoSaldo = saldoAtual + valor;
+        try (Connection con = getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
 
-            try (PreparedStatement ps = conn.prepareStatement(sqlUpdate)) {
-                ps.setDouble(1, novoSaldo);
-                ps.setInt(2, contaId);
-                ps.executeUpdate();
+            ps.setString(1, numeroConta);
+
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                Conta c = new Conta();
+                c.setId(rs.getInt("ID"));
+                c.setUsuarioId(rs.getInt("USUARIO_ID"));
+                c.setNumeroConta(rs.getString("NUMERO_CONTA"));
+                c.setSaldo(rs.getBigDecimal("SALDO"));
+                return c;
             }
-
-            extratoDAO.registrar(conn, contaId, "DEPOSITO", valor, "Depósito realizado na conta " + numeroConta);
-            conn.commit();
-            return true;
-
-        } catch (SQLException e) {
-            if (conn != null) conn.rollback();
-            throw e;
-        } finally {
-            if (conn != null) { conn.setAutoCommit(true); conn.close(); }
+        }
+        return null;
+    }
+    
+    public void registrarExtrato(int contaId, String tipo, BigDecimal valor, String descricao) throws Exception {
+        String sql = "INSERT INTO EXTRATOS (CONTA_ID, TIPO, VALOR, DESCRICAO) VALUES (?, ?, ?, ?)";
+        
+        try (Connection con = getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            
+            ps.setInt(1, contaId);
+            ps.setString(2, tipo);
+            ps.setBigDecimal(3, valor);
+            ps.setString(4, descricao);
+            ps.executeUpdate();
         }
     }
 
-    public boolean sacar(String numeroConta, double valor) throws SQLException {
-        if (valor <= 0) throw new IllegalArgumentException("Valor inválido.");
 
-        String sqlSelect = "SELECT id, saldo FROM contas WHERE numero_conta = ? FOR UPDATE";
-        String sqlUpdate = "UPDATE contas SET saldo = ? WHERE id = ?";
-
-        Connection conn = null;
-        try {
-            conn = ConexaoBD.getConnection();
-            conn.setAutoCommit(false);
-
-            int contaId;
-            double saldoAtual;
-
-            try (PreparedStatement ps = conn.prepareStatement(sqlSelect)) {
-                ps.setString(1, numeroConta);
-                try (ResultSet rs = ps.executeQuery()) {
-                    if (!rs.next()) { conn.rollback(); return false; }
-                    contaId = rs.getInt("id");
-                    saldoAtual = rs.getDouble("saldo");
-                }
-            }
-
-            if (saldoAtual < valor) { conn.rollback(); return false; }
-
-            double novoSaldo = saldoAtual - valor;
-
-            try (PreparedStatement ps = conn.prepareStatement(sqlUpdate)) {
-                ps.setDouble(1, novoSaldo);
-                ps.setInt(2, contaId);
-                ps.executeUpdate();
-            }
-
-            extratoDAO.registrar(conn, contaId, "SAQUE", valor, "Saque realizado na conta " + numeroConta);
-            conn.commit();
-            return true;
-
-        } catch (SQLException e) {
-            if (conn != null) conn.rollback();
-            throw e;
-        } finally {
-            if (conn != null) { conn.setAutoCommit(true); conn.close(); }
-        }
-    }
-
-    public boolean transferir(String origem, String destino, double valor) throws SQLException {
-        if (valor <= 0) throw new IllegalArgumentException("Valor inválido.");
-
-        String sqlSelect = "SELECT id, saldo FROM contas WHERE numero_conta = ? FOR UPDATE";
-        String sqlUpdate = "UPDATE contas SET saldo = ? WHERE id = ?";
-
-        Connection conn = null;
-        try {
-            conn = ConexaoBD.getConnection();
-            conn.setAutoCommit(false);
-
-            int idOrigem, idDestino;
-            double saldoOrigem, saldoDestino;
-
-            try (PreparedStatement ps = conn.prepareStatement(sqlSelect)) {
-                ps.setString(1, origem);
-                try (ResultSet rs = ps.executeQuery()) {
-                    if (!rs.next()) { conn.rollback(); return false; }
-                    idOrigem = rs.getInt("id");
-                    saldoOrigem = rs.getDouble("saldo");
-                }
-            }
-
-            try (PreparedStatement ps = conn.prepareStatement(sqlSelect)) {
-                ps.setString(1, destino);
-                try (ResultSet rs = ps.executeQuery()) {
-                    if (!rs.next()) { conn.rollback(); return false; }
-                    idDestino = rs.getInt("id");
-                    saldoDestino = rs.getDouble("saldo");
-                }
-            }
-
-            if (saldoOrigem < valor) { conn.rollback(); return false; }
-
-            double novoSaldoOrigem = saldoOrigem - valor;
-            double novoSaldoDestino = saldoDestino + valor;
-
-            try (PreparedStatement ps = conn.prepareStatement(sqlUpdate)) {
-                ps.setDouble(1, novoSaldoOrigem);
-                ps.setInt(2, idOrigem);
-                ps.executeUpdate();
-            }
-
-            try (PreparedStatement ps = conn.prepareStatement(sqlUpdate)) {
-                ps.setDouble(1, novoSaldoDestino);
-                ps.setInt(2, idDestino);
-                ps.executeUpdate();
-            }
-
-            extratoDAO.registrar(conn, idOrigem, "TRANSFERENCIA_ENVIADA", valor, "Transferência enviada para " + destino);
-            extratoDAO.registrar(conn, idDestino, "TRANSFERENCIA_RECEBIDA", valor, "Transferência recebida de " + origem);
-
-            conn.commit();
-            return true;
-
-        } catch (SQLException e) {
-            if (conn != null) conn.rollback();
-            throw e;
-        } finally {
-            if (conn != null) { conn.setAutoCommit(true); conn.close(); }
-        }
-    }
 }

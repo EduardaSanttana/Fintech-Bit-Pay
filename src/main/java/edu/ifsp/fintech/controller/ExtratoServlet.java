@@ -1,28 +1,41 @@
 package edu.ifsp.fintech.controller;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
+
+import edu.ifsp.fintech.modelo.Conta;
 import edu.ifsp.fintech.modelo.Extrato;
 import edu.ifsp.fintech.persistencia.ExtratoDAO;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.*;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 @WebServlet("/extrato")
 public class ExtratoServlet extends HttpServlet {
-    
-	private static final long serialVersionUID = 1L;
 
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    private static final long serialVersionUID = 1L;
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+
+        Conta conta = (Conta) request.getSession().getAttribute("contaLogada");
+
+        if (conta == null) {
+            response.sendRedirect("paginas/Login.jsp");
+            return;
+        }
+
         try {
-            int contaId = Integer.parseInt(req.getParameter("id"));
-            ExtratoDAO dao = new ExtratoDAO();
-            List<Extrato> lista = dao.listarPorConta(contaId);
-            req.setAttribute("extratos", lista);
-            req.getRequestDispatcher("/paginas/Extrato.jsp").forward(req, resp);
-        } catch (SQLException e) {
-            throw new ServletException(e);
+            List<Extrato> lista = new ExtratoDAO().listar(conta.getId());
+
+            request.setAttribute("extratos", lista);
+            request.getRequestDispatcher("paginas/Extrato.jsp").forward(request, response);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.sendRedirect("paginas/Extrato.jsp?erro=1");
         }
     }
 }

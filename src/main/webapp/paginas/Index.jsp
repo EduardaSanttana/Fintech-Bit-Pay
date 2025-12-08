@@ -1,31 +1,39 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java"%>
-<%@ page session="true"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="edu.ifsp.fintech.modelo.Usuario" %>
+<%@ page import="edu.ifsp.fintech.modelo.Conta" %>
+
+<!DOCTYPE html>
 <html>
 <head>
-<title>Dashboard</title>
+<meta charset="UTF-8">
+<title>BitPay - Dashboard</title>
 </head>
 <body>
-	<h2>Bem-vindo, ${sessionScope.usuarioNome}</h2>
-	<ul>
-		<li><a
-			href="${pageContext.request.contextPath}/paginas/Deposito.jsp">Depósito</a></li>
-		<li><a
-			href="${pageContext.request.contextPath}/paginas/Saque.jsp">Saque</a></li>
-		<li><a
-			href="${pageContext.request.contextPath}/paginas/Transferencia.jsp">Transferência</a></li>
-		<li><a
-			href="${pageContext.request.contextPath}/paginas/Extrato.jsp">Extrato</a></li>
-		<li><a href="${pageContext.request.contextPath}/logout">Logout</a></li>
-	</ul>
 
 <%
-    HttpSession sess = request.getSession(false);
-    if (sess != null && sess.getAttribute("usuarioTipo") != null &&
-        "GERENTE".equalsIgnoreCase(sess.getAttribute("usuarioTipo").toString())) {
+Usuario u = (Usuario) session.getAttribute("usuarioLogado");
+Conta c = (Conta) session.getAttribute("contaLogada");
+
+if (u == null || c == null) {
+    response.sendRedirect("paginas/Login.jsp");
+    return;
+}
 %>
-    <p><a href="<%= request.getContextPath() %>/paginas/GerentePendencias.jsp">Aprovar contas pendentes</a></p>
-<%
-    }
-%>
+
+<h2>Bem-vindo, <%= u.getNome() %>!</h2>
+
+<p>Conta: <%= c.getNumeroConta() %></p>
+<p>Saldo: R$ <%= String.format("%.2f", c.getSaldo()) %></p>
+
+<hr>
+
+<ul>
+    <li><a href="Deposito.jsp">Depósito</a></li>
+    <li><a href="Saque.jsp">Saque</a></li>
+    <li><a href="Transferencia.jsp">Transferência</a></li>
+    <li><a href="Extrato.jsp">Extrato</a></li>
+    <li><a href="../logout">Sair</a></li>
+</ul>
+
 </body>
 </html>
