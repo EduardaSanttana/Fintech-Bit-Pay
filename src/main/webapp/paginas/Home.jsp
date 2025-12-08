@@ -34,7 +34,7 @@
         Pagamentos rápidos, investimentos inteligentes e controle financeiro
         em um só lugar. Seguro, moderno e 100% digital.
       </p>
-      <button class="btn btn-primary">Abrir Conta</button>
+      <a href="CadastrarConta.jsp"><button class="btn btn-primary">Abrir Conta</button></a>
     </div>
   </div>
 </div>
@@ -42,7 +42,7 @@
 <div class="text-center py-20 bg-primary text-white">
   <h2 class="text-4xl font-bold mb-4">Comece agora</h2>
   <p class="text-lg mb-8">Crie sua conta em 5 minutos.</p>
-  <button class="btn btn-secondary">Criar Conta</button>
+  <a href="CadastrarConta.jsp"><button class="btn btn-secondary" href="CadastrarConta.jsp">Criar Conta</button></a>
 </div>
 
 <footer class="footer p-10 bg-base-100 text-base-content">
