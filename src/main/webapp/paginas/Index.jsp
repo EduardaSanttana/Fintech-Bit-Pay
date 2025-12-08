@@ -30,6 +30,7 @@ if (u == null || c == null) {
   <div class="flex-none gap-4 font-medium">
     <a class="btn btn-ghost">Investimentos</a>
     <a class="btn btn-ghost">Contato</a>
+    <a href="AlterarDadosUsuario.jsp" class="btn btn-ghost">Dados do usuário</a>
     <a href="../logout" class="btn btn-outline btn-primary">Sair</a>
   </div>
 </div>
