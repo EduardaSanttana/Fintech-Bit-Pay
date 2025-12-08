@@ -13,7 +13,8 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
-@WebServlet("/extrato")
+@WebServlet("/extrato-controller")
+
 public class ExtratoController extends HttpServlet {
 
     private static final long serialVersionUID = 1L;

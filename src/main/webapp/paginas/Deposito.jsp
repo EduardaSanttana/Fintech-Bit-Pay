@@ -1,25 +1,16 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<!DOCTYPE html>
+<%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>Realizar Depósito</title>
+<title>Depósito</title>
 </head>
 <body>
-<h2>Realizar Depósito</h2>
-
-<form action="${pageContext.request.contextPath}/realizar-deposito" method="post">
-    <label for="numeroConta">Número da Conta:</label>
-    <input type="text" id="numeroConta" name="numeroConta" required />
-    <br/>
-
-    <label for="valor">Valor (ex: 100.50):</label>
-    <input type="text" id="valor" name="valor" required />
-    <br/>
-
-    <button type="submit">Depositar</button>
-</form>
-
-<a href="${pageContext.request.contextPath}/">Voltar</a>
+	<h2>Depósito</h2>
+	<p style="color: red">${erro}</p>
+	<form action="${pageContext.request.contextPath}/depositar"
+		method="post">
+		Número da conta: <input name="numeroConta" required><br>
+		Valor: <input name="valor" type="number" step="0.01" required><br>
+		<button type="submit">Depositar</button>
+	</form>
 </body>
 </html>

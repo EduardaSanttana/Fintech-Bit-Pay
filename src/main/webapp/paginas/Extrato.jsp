@@ -1,62 +1,40 @@
-<%@ page contentType="text/html; charset=UTF-8" %>
-<%@ page import="java.util.List" %>
-<%@ page import="edu.ifsp.fintech.modelo.Extrato" %>
-<%@ page import="edu.ifsp.fintech.modelo.Conta" %>
-
+<%@ page contentType="text/html;charset=UTF-8" language="java"%>
+<%@ page import="java.util.List"%>
+<%@ page import="edu.ifsp.fintech.modelo.Extrato"%>
 <html>
 <head>
-    <title>Extrato da Conta</title>
-    <style>
-        table {
-            width: 70%;
-            margin: auto;
-            border-collapse: collapse;
-        }
-        th, td {
-            border: 1px solid #333;
-            padding: 8px;
-            text-align: center;
-        }
-        th {
-            background: #eee;
-        }
-        h2 {
-            text-align: center;
-        }
-    </style>
+<title>Extrato</title>
 </head>
 <body>
-
-<%
-    Conta conta = (Conta) request.getAttribute("conta");
-    List<Extrato> extrato = (List<Extrato>) request.getAttribute("extrato");
-%>
-
-<h2>Extrato da Conta <%= conta.getNumeroConta() %></h2>
-
-<table>
-    <tr>
-        <th>Data</th>
-        <th>Tipo</th>
-        <th>Valor</th>
-        <th>Descrição</th>
-    </tr>
-
-    <% for (Extrato e : extrato) { %>
-    <tr>
-        <td><%= e.getDataHora() %></td>
-        <td><%= e.getTipo() %></td>
-
-        <% if (e.getTipo().equals("DEPOSITO")) { %>
-            <td style="color: green;">+ <%= e.getValor() %></td>
-        <% } else { %>
-            <td style="color: red;">- <%= e.getValor() %></td>
-        <% } %>
-
-        <td><%= e.getDescricao() %></td>
-    </tr>
-    <% } %>
-</table>
-
+	<h2>Extrato</h2>
+	<form action="${pageContext.request.contextPath}/extrato" method="get">
+		ID da conta: <input type="number" name="id" required><br>
+		<button type="submit">Gerar</button>
+	</form>
+	<%
+	List<Extrato> lista = (List<Extrato>) request.getAttribute("extratos");
+	if (lista != null) {
+	%>
+	<table border="1" cellpadding="6">
+		<tr>
+			<th>Data</th>
+			<th>Tipo</th>
+			<th>Valor</th>
+			<th>Descrição</th>
+		</tr>
+		<%
+		for (Extrato e : lista) {
+		%>
+		<tr>
+			<td><%=e.getDataHora()%></td>
+			<td><%=e.getTipo()%></td>
+			<td><%=e.getValor()%></td>
+			<td><%=e.getDescricao()%></td>
+		</tr>
+		<%
+		}
+		%>
+	</table>
+	<% } %>
 </body>
 </html>
