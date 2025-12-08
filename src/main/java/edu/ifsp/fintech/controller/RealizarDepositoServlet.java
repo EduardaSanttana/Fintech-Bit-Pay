@@ -1,62 +1,55 @@
 package edu.ifsp.fintech.controller;
 
+import edu.ifsp.fintech.persistencia.ContaDAO;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.*;
+import jakarta.servlet.*;
 import java.io.IOException;
 import java.sql.SQLException;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import edu.ifsp.fintech.persistencia.ContaDAO;
 
-@WebServlet("/realizar-deposito")
+@WebServlet("/depositar")
 public class RealizarDepositoServlet extends HttpServlet {
+    
     private static final long serialVersionUID = 1L;
-    private ContaDAO contaDAO = new ContaDAO();
-
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("/paginas/Deposito.jsp").forward(req, resp);
-    }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String numeroConta = req.getParameter("numeroConta");
-        String valorStr = req.getParameter("valor");
-
-        if (numeroConta == null || numeroConta.trim().isEmpty() || valorStr == null || valorStr.trim().isEmpty()) {
-            req.setAttribute("erro", "Número da conta e valor são obrigatórios.");
-            req.getRequestDispatcher("/paginas/DepositoErro.jsp").forward(req, resp);
-            return;
-        }
-
-        double valor;
         try {
-            valor = Double.parseDouble(valorStr);
-        } catch (NumberFormatException e) {
-            req.setAttribute("erro", "Valor inválido.");
-            req.getRequestDispatcher("/paginas/DepositoErro.jsp").forward(req, resp);
-            return;
-        }
+            req.setCharacterEncoding("UTF-8");
 
-        try {
-            boolean ok = contaDAO.depositarPorNumeroConta(numeroConta, valor);
+            // Pega parâmetros do formulário
+            String numeroConta = req.getParameter("numeroConta");
+            String valorTexto = req.getParameter("valor");
+
+            // Validação básica
+            if (numeroConta == null || numeroConta.trim().isEmpty() ||
+                valorTexto == null || valorTexto.trim().isEmpty()) {
+
+                req.setAttribute("erro", "Informe número da conta e o valor.");
+                req.getRequestDispatcher("/paginas/Erro.jsp").forward(req, resp);
+                return;
+            }
+
+            // Converte o valor (suporta vírgula e ponto)
+            double valor = Double.parseDouble(valorTexto.replace(",", "."));
+
+            ContaDAO dao = new ContaDAO();
+            boolean ok = dao.depositarPorNumeroConta(numeroConta, valor);
+
             if (ok) {
                 req.setAttribute("mensagem", "Depósito realizado com sucesso!");
-                req.setAttribute("numeroConta", numeroConta);
-                req.setAttribute("valor", String.format("%.2f", valor));
-                req.getRequestDispatcher("/paginas/DepositoSucesso.jsp").forward(req, resp);
+                req.getRequestDispatcher("/paginas/Sucesso.jsp").forward(req, resp);
             } else {
-                req.setAttribute("erro", "Conta não encontrada ou atualização falhou.");
-                req.getRequestDispatcher("/paginas/DepositoErro.jsp").forward(req, resp);
+                req.setAttribute("erro", "Conta não encontrada ou erro ao depositar.");
+                req.getRequestDispatcher("/paginas/Erro.jsp").forward(req, resp);
             }
-        } catch (IllegalArgumentException iae) {
-            req.setAttribute("erro", iae.getMessage());
-            req.getRequestDispatcher("/paginas/DepositoErro.jsp").forward(req, resp);
+
+        } catch (NumberFormatException e) {
+            req.setAttribute("erro", "Valor inválido.");
+            req.getRequestDispatcher("/paginas/Erro.jsp").forward(req, resp);
+
         } catch (SQLException e) {
-            e.printStackTrace();
-            req.setAttribute("erro", "Erro ao acessar o banco: " + e.getMessage());
-            req.getRequestDispatcher("/paginas/DepositoErro.jsp").forward(req, resp);
+            throw new ServletException("Erro ao realizar depósito: ", e);
         }
     }
 }

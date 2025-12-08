@@ -1,90 +1,90 @@
 package edu.ifsp.fintech.modelo;
 
 public class Cliente {
+
     private int id;
     private String nome;
+    private String cpf;
     private String email;
     private String senha;
-    private String cpf;
-    private String endereco;
     private String telefone;
-    private String tipoConta;
-    
-    public Cliente() {}
-    
-    public Cliente(int id, String nome, String email, String senha, String cpf, String endereco, String telefone, String tipoConta) {
+    private String endereco;
+
+    public Cliente() {
+    }
+
+    public Cliente(int id, String nome, String cpf, String email, String senha, String telefone, String endereco) {
         this.id = id;
         this.nome = nome;
+        this.cpf = cpf;
+               this.email = email;
+        this.senha = senha;
+        this.telefone = telefone;
+        this.endereco = endereco;
+    }
+
+    public Cliente(String nome, String cpf, String email, String senha, String telefone, String endereco) {
+        this.nome = nome;
+        this.cpf = cpf;
         this.email = email;
         this.senha = senha;
-        this.endereco = endereco;
-        this.cpf = cpf;
         this.telefone = telefone;
-        this.tipoConta = tipoConta;
+        this.endereco = endereco;
     }
 
     public int getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public String getNome() {
         return nome;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public String getCpf() {
+        return cpf;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public String getSenha() {
         return senha;
+    }
+
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public String getEndereco() {
+        return endereco;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public void setSenha(String senha) {
         this.senha = senha;
     }
 
-	public String getCpf() {
-		return cpf;
-	}
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
+    }
 
-	public void setCpf(String cpf) {
-		this.cpf = cpf;
-	}
-
-	public String getEndereco() {
-		return endereco;
-	}
-
-	public void setEndereco(String endereco) {
-		this.endereco = endereco;
-	}
-
-	public String getTelefone() {
-		return telefone;
-	}
-
-	public void setTelefone(String telefone) {
-		this.telefone = telefone;
-	}
-
-	public String getTipoConta() {
-		return tipoConta;
-	}
-
-	public void setTipoConta(String tipoConta) {
-		this.tipoConta = tipoConta;
-	}   
-
+    public void setEndereco(String endereco) {
+        this.endereco = endereco;
+    }
 }

@@ -7,22 +7,23 @@ import jakarta.servlet.*;
 import java.io.IOException;
 import java.sql.SQLException;
 
-@WebServlet("/sacar")
-public class RealizarSaqueServlet extends HttpServlet {
+@WebServlet("/transferir")
+public class RealizarTransferenciaServlet extends HttpServlet {
     
 	private static final long serialVersionUID = 1L;
 
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
-            String numeroConta = req.getParameter("numeroConta");
+            String origem = req.getParameter("origem");
+            String destino = req.getParameter("destino");
             double valor = Double.parseDouble(req.getParameter("valor").replace(",", "."));
             ContaDAO dao = new ContaDAO();
-            boolean ok = dao.sacar(numeroConta, valor);
+            boolean ok = dao.transferir(origem, destino, valor);
             if (ok) {
-                req.setAttribute("mensagem", "Saque realizado");
+                req.setAttribute("mensagem", "Transferência realizada");
                 req.getRequestDispatcher("/paginas/Sucesso.jsp").forward(req, resp);
             } else {
-                req.setAttribute("erro", "Saldo insuficiente ou conta inexistente");
+                req.setAttribute("erro", "Falha na transferência");
                 req.getRequestDispatcher("/paginas/Erro.jsp").forward(req, resp);
             }
         } catch (SQLException e) {

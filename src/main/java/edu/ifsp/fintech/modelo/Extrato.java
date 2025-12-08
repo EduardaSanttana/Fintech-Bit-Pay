@@ -10,6 +10,9 @@ public class Extrato {
 	private LocalDateTime dataHora;
 	private String descricao;
 
+	public Extrato() {
+	}
+
 	public Extrato(int id, int contaId, String tipo, double valor, LocalDateTime dataHora, String descricao) {
 		this.id = id;
 		this.contaId = contaId;
@@ -48,5 +51,29 @@ public class Extrato {
 
 	public String getDescricao() {
 		return descricao;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public void setContaId(int contaId) {
+		this.contaId = contaId;
+	}
+
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
+	}
+
+	public void setValor(double valor) {
+		this.valor = valor;
+	}
+
+	public void setDataHora(LocalDateTime dataHora) {
+		this.dataHora = dataHora;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
 	}
 }

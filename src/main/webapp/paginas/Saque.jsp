@@ -1,22 +1,15 @@
-<!DOCTYPE html>
+<%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <html>
 <head>
-    <title>Realizar Saque</title>
+<title>Saque</title>
 </head>
 <body>
-
-<h2>Realizar Saque</h2>
-
-<form action="../saque" method="post">
-
-    <label>Número da Conta:</label>
-    <input type="text" name="numeroConta" required><br><br>
-
-    <label>Valor do Saque:</label>
-    <input type="number" name="valor" step="0.01" required><br><br>
-
-    <button type="submit">Sacar</button>
-</form>
-
+	<h2>Saque</h2>
+	<p style="color: red">${erro}</p>
+	<form action="${pageContext.request.contextPath}/sacar" method="post">
+		NÃºmero da conta: <input name="numeroConta" required><br>
+		Valor: <input name="valor" type="number" step="0.01" required><br>
+		<button type="submit">Sacar</button>
+	</form>
 </body>
 </html>
