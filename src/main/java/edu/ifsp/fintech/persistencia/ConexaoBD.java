@@ -15,9 +15,9 @@ public class ConexaoBD {
 
     public static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(
-            "jdbc:mysql://localhost:3306/BITPAY",
+            "jdbc:mysql://localhost:3306/BITPAY?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true",
             "root",
-            "root"
+            "root" 
         );
     }
 }
