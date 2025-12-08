@@ -71,5 +71,26 @@ public class UsuarioDAO {
             return rs.next();
         }
     }
+    
+    public void alterar(Usuario u, int id) throws Exception {
+        String sql = "UPDATE USUARIOS SET NOME = ?, EMAIL = ?, ENDERECO = ?, TELEFONE = ? WHERE id = ?";
+
+        try (Connection con = getConnection();
+             PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+
+            ps.setString(1, u.getNome());
+            ps.setString(2, u.getEmail());
+            ps.setString(3, u.getEndereco());
+            ps.setString(4, u.getTelefone());
+            ps.setInt(5, id);
+
+            ps.executeUpdate();
+
+            ResultSet rs = ps.getGeneratedKeys();
+            if (rs.next()) {
+                u.setId(rs.getInt(1));
+            }
+        }
+    }
 
 }
