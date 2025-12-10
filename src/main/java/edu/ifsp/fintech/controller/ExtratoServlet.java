@@ -19,7 +19,7 @@ public class ExtratoServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
-
+    	
         Conta conta = (Conta) request.getSession().getAttribute("contaLogada");
 
         if (conta == null) {

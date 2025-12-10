@@ -51,7 +51,7 @@ if (u == null || c == null) {
   <a href="Deposito.jsp" class="btn btn-outline btn-primary w-full">Depósito</a>
   <a href="Saque.jsp" class="btn btn-outline btn-primary w-full">Saque</a>
   <a href="Transferencia.jsp" class="btn btn-outline btn-primary w-full">Transferência</a>
-  <a href="Extrato.jsp" class="btn btn-outline btn-primary w-full">Extrato</a>
+  <a href="../extrato" class="btn btn-outline btn-primary w-full">Extrato</a>
 </div>
 
   </div>
