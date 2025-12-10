@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="java.util.*, edu.ifsp.fintech.modelo.Extrato" %>
+<%@ page import="
+    java.util.*, 
+    java.text.SimpleDateFormat,
+    edu.ifsp.fintech.modelo.Extrato
+" %>
 
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -41,24 +45,25 @@
 
           <tbody>
           <%
-          List<Extrato> lista = (List<Extrato>) request.getAttribute("extratos");
+	      List<Extrato> lista = (List<Extrato>) request.getAttribute("extratos");
+	      SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
-          if (lista != null) {
+          if (lista != null && !lista.isEmpty()) {
               for (Extrato e : lista) {
           %>
-            <tr>
-              <td><%= e.getDataHora() %></td>
-              <td><%= e.getTipo() %></td>
-              <td>R$ <%= e.getValor() %></td>
-              <td><%= e.getDescricao() %></td>
-            </tr>
+                <tr>
+                  <td><%= sdf.format(e.getDataHora()) %></td>
+                  <td><%= e.getTipo() %></td>
+                  <td>R$ <%= e.getValor() %></td>
+                  <td><%= e.getDescricao() %></td>
+                </tr>
           <%
               }
           } else {
           %>
-            <tr>
-              <td colspan="4" class="text-error text-center">Nenhum extrato encontrado.</td>
-            </tr>
+                <tr>
+                  <td colspan="4" class="text-error text-center">Nenhum extrato encontrado.</td>
+                </tr>
           <%
           }
           %>
