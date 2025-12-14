@@ -1,46 +1,128 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
+<%@ page import="java.util.List"%>
+<%@ page import="edu.ifsp.fintech.modelo.Emprestimo"%>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
 <title>Fintech Bit Pay - Empréstimos</title>
 
-<link href="https://cdn.jsdelivr.net/npm/daisyui@4.7.2/dist/full.min.css" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/npm/daisyui@4.7.2/dist/full.min.css"
+      rel="stylesheet" />
 <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="bg-base-200 min-h-screen m-0 p-0">
+<body class="bg-base-200 min-h-screen">
 
 <div class="max-w-6xl mx-auto pt-12">
 
-    <div class="card bg-base-100 shadow-xl">
-        <div class="card-body">
+    <div class="card bg-base-100 border border-base-300 rounded-2xl">
+        <div class="card-body space-y-6">
 
-            <h2 class="card-title text-2xl text-primary">Empréstimos</h2>
+            <!-- HEADER -->
+            <div class="flex items-center gap-4">
+                <a href="<%= request.getContextPath() %>/paginas/Index.jsp"
+                   class="btn btn-ghost btn-sm gap-2 text-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         class="h-4 w-4"
+                         fill="none"
+                         viewBox="0 0 24 24"
+                         stroke="currentColor">
+                        <path stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M15 19l-7-7 7-7" />
+                    </svg>
+                    Voltar
+                </a>
+            </div>
+
+            <h2 class="text-3xl font-bold text-primary">
+                Empréstimos
+            </h2>
 
             <%
-                String erro = (String) request.getAttribute("erro");
-                if (erro != null) {
-            %>
-                <div class="alert alert-error mt-4">
-                    <span><%= erro %></span>
-                </div>
-            <%
-                }
+                List<Emprestimo> emprestimos =
+                    (List<Emprestimo>) request.getAttribute("emprestimos");
+
+                boolean temEmprestimos =
+                    emprestimos != null && !emprestimos.isEmpty();
             %>
 
-            <div role="tablist" class="tabs tabs-lifted mt-6">
+            <!-- TABS -->
+            <div role="tablist" class="tabs tabs-bordered">
 
                 <input type="radio" name="emprestimoTabs" role="tab"
-                       class="tab" aria-label="Simulação" checked />
+                       class="tab font-medium"
+                       aria-label="Meus Empréstimos"
+                       <%= temEmprestimos ? "checked" : "" %> />
 
-                <div role="tabpanel"
-                     class="tab-content bg-base-100 p-6 rounded-box">
+                <div role="tabpanel" class="tab-content pt-6">
 
-                    <form action="<%= request.getContextPath() %>/simular-emprestimo"
-                          method="post" class="space-y-4 max-w-xl">
+                    <%
+                        if (!temEmprestimos) {
+                    %>
+                        <div class="alert alert-info">
+                            <span>Você ainda não possui empréstimos contratados.</span>
+                        </div>
+                    <%
+                        } else {
+                    %>
+
+                        <div class="overflow-x-auto">
+                            <table class="table table-zebra">
+                                <thead>
+                                    <tr>
+                                        <th>Data</th>
+                                        <th>Valor</th>
+                                        <th>Parcelas</th>
+                                        <th>Taxa</th>
+                                        <th>Total</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% for (Emprestimo e : emprestimos) { %>
+                                    <tr>
+                                        <td><%= e.getDataContratacao() %></td>
+                                        <td>R$ <%= e.getValor() %></td>
+                                        <td><%= e.getParcelas() %></td>
+                                        <td><%= e.getTaxaJuros() %></td>
+                                        <td class="font-semibold text-primary">
+                                            R$ <%= e.getValorTotal() %>
+                                        </td>
+                                        <td>
+                                            <span class="badge badge-success">
+                                                <%= e.getStatus() %>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <% } %>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    <%
+                        }
+                    %>
+
+                </div>
+
+                <input type="radio" name="emprestimoTabs" role="tab"
+                       class="tab font-medium"
+                       aria-label="Simulação"
+                       <%= temEmprestimos ? "" : "checked" %> />
+
+                <div role="tabpanel" class="tab-content pt-6">
+
+                    <form action="<%= request.getContextPath() %>/emprestimos"
+                          method="post"
+                          class="space-y-4 max-w-md">
+
+                        <input type="hidden" name="acao" value="simular" />
 
                         <div>
                             <label class="label">
@@ -58,28 +140,12 @@
                                    class="input input-bordered w-full" required>
                         </div>
 
-                        <div class="pt-4">
-                            <button type="submit"
-                                    class="btn btn-primary w-full">
-                                Simular Empréstimo
-                            </button>
-                        </div>
+                        <button type="submit"
+                                class="btn btn-primary w-full">
+                            Simular Empréstimo
+                        </button>
 
                     </form>
-
-                </div>
-
-                <input type="radio" name="emprestimoTabs" role="tab"
-                       class="tab" aria-label="Meus Empréstimos" />
-
-                <div role="tabpanel"
-                     class="tab-content bg-base-100 p-6 rounded-box">
-
-                    <div class="alert alert-info">
-                        <span>
-                            Você ainda não possui empréstimos contratados.
-                        </span>
-                    </div>
 
                 </div>
 

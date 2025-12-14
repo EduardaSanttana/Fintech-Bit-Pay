@@ -1,39 +1,66 @@
 package edu.ifsp.fintech.modelo;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+
 public class Emprestimo {
 
-    private int parcela;
-    private double saldoDevedor;
-    private double juros;
-    private double amortizacao;
-    private double valorParcela;
+	private int id;
+	private int contaId;
+	private BigDecimal valor;
+	private int parcelas;
+	private BigDecimal taxaJuros;
+	private BigDecimal valorTotal;
+	private String status;
+	private LocalDate dataContratacao;
 
-    public Emprestimo(int parcela, double saldoDevedor, double juros,
-                      double amortizacao, double valorParcela) {
-        this.parcela = parcela;
-        this.saldoDevedor = saldoDevedor;
-        this.juros = juros;
-        this.amortizacao = amortizacao;
-        this.valorParcela = valorParcela;
-    }
+	public Emprestimo(int contaId, BigDecimal valor, int parcelas, BigDecimal taxaJuros, BigDecimal valorTotal) {
+		this.contaId = contaId;
+		this.valor = valor;
+		this.parcelas = parcelas;
+		this.taxaJuros = taxaJuros;
+		this.valorTotal = valorTotal;
+		this.status = "ATIVO";
+		this.dataContratacao = LocalDate.now();
+	}
 
-    public int getParcela() {
-        return parcela;
-    }
+	public int getId() {
+		return id;
+	}
 
-    public double getSaldoDevedor() {
-        return saldoDevedor;
-    }
+	public int getContaId() {
+		return contaId;
+	}
 
-    public double getJuros() {
-        return juros;
-    }
+	public BigDecimal getValor() {
+		return valor;
+	}
 
-    public double getAmortizacao() {
-        return amortizacao;
-    }
+	public int getParcelas() {
+		return parcelas;
+	}
 
-    public double getValorParcela() {
-        return valorParcela;
-    }
+	public BigDecimal getTaxaJuros() {
+		return taxaJuros;
+	}
+
+	public BigDecimal getValorTotal() {
+		return valorTotal;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public LocalDate getDataContratacao() {
+		return dataContratacao;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public void setDataContratacao(LocalDate dataContratacao) {
+		this.dataContratacao = dataContratacao;
+	}
 }

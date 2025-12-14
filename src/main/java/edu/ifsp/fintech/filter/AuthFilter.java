@@ -25,9 +25,7 @@ public class AuthFilter implements Filter {
 
         boolean publicPage =
         	    url.endsWith("Login.jsp") ||
-        	    url.endsWith("CriarConta.jsp") ||
-        	    url.endsWith("Emprestimo.jsp") ||         
-        	    url.contains("simular-emprestimo") ||      
+        	    url.endsWith("CriarConta.jsp") ||    
         	    url.contains("login") ||
         	    url.contains("cadastrar") ||
         	    url.contains("css") ||
