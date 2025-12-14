@@ -45,7 +45,6 @@ public class CadastroUsuarioServlet extends HttpServlet {
 
             usuarioDAO.salvar(u);
 
-            // cria conta com situação padrão ATIVA
             new ContaDAO().criarConta(u.getId());
 
             response.sendRedirect("paginas/Login.jsp?sucesso=1");

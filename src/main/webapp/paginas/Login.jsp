@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -14,43 +13,42 @@
 
 <body class="bg-base-200 min-h-screen flex items-center justify-center">
 
-<div class="card w-full max-w-sm shadow-xl bg-base-100">
-  <div class="card-body">
+  <div class="card w-full max-w-sm shadow-xl bg-base-100">
+    <div class="card-body">
 
-    <h2 class="text-3xl font-bold text-center mb-4 text-primary">Login</h2>
+      <h2 class="text-3xl font-bold text-center mb-4 text-primary">
+        <a href="Home.jsp">Bit Pay</a>
+      </h2>
 
-    <form action="../login" method="post" class="space-y-4">
+      <form action="../login" method="post" class="space-y-4">
 
-      <label class="form-control">
-        <span class="label-text">Email</span>
-        <input name="email" type="email" required class="input input-bordered" />
-      </label>
+        <label class="form-control">
+          <span class="label-text">Email</span>
+          <input name="email" type="email" required class="input input-bordered" />
+        </label>
 
-      <label class="form-control">
-        <span class="label-text">Senha</span>
-        <input name="senha" type="password" required class="input input-bordered" />
-      </label>
-      <button type="submit" class="btn btn-primary w-full mt-2">
-        Entrar
-      </button>
-    </form>
+        <label class="form-control">
+          <span class="label-text">Senha</span>
+          <input name="senha" type="password" required class="input input-bordered" />
+        </label>
 
-    <div class="text-center mt-4">
-      <a href="CadastrarConta.jsp" class="link link-primary">
-        Criar Conta
-      </a>
-    </div>
+        <button type="submit" class="btn btn-primary w-full mt-2">Entrar</button>
+      </form>
 
-    <% if (request.getParameter("erro") != null) { %>
+      <div class="text-center mt-4 text-sm text-base-content/70">
+        Não tem conta? <a href="CadastrarConta.jsp" class="link link-primary font-medium"> Criar conta </a>
+      </div>
+
+      <% if (request.getParameter("erro") != null) { %>
       <p class="text-error text-center mt-3">Usuário ou senha inválidos</p>
-    <% } %>
+      <% } %>
 
-    <% if (request.getParameter("sucesso") != null) { %>
+      <% if (request.getParameter("sucesso") != null) { %>
       <p class="text-success text-center mt-3">Conta criada com sucesso! Faça login.</p>
-    <% } %>
+      <% } %>
 
+    </div>
   </div>
-</div>
 
 </body>
 </html>
