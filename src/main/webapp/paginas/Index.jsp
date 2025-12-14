@@ -52,10 +52,11 @@ if (u == null || c == null) {
   <a href="Saque.jsp" class="btn btn-outline btn-primary w-full">Saque</a>
   <a href="Transferencia.jsp" class="btn btn-outline btn-primary w-full">Transferência</a>
   <a href="../extrato" class="btn btn-outline btn-primary w-full">Extrato</a>
+  <a href="Emprestimo.jsp" class="btn btn-outline btn-secondary w-full">Empréstimo</a>
 </div>
 
-  </div>
-</div>
+
+ </div>
 
 </body>
 </html>

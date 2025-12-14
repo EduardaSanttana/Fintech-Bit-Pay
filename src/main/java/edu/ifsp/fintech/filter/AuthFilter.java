@@ -24,15 +24,18 @@ public class AuthFilter implements Filter {
         String url = request.getRequestURI();
 
         boolean publicPage =
-            url.endsWith("Login.jsp") ||
-            url.endsWith("CriarConta.jsp") ||
-            url.contains("login") ||
-            url.contains("cadastrar") ||
-            url.contains("css") ||
-            url.contains("js") ||
-            url.contains("png") ||
-            url.contains("jpg") ||
-            url.contains("gif");
+        	    url.endsWith("Login.jsp") ||
+        	    url.endsWith("CriarConta.jsp") ||
+        	    url.endsWith("Emprestimo.jsp") ||         
+        	    url.contains("simular-emprestimo") ||      
+        	    url.contains("login") ||
+        	    url.contains("cadastrar") ||
+        	    url.contains("css") ||
+        	    url.contains("js") ||
+        	    url.contains("png") ||
+        	    url.contains("jpg") ||
+        	    url.contains("gif");
+
 
         boolean logged = request.getSession().getAttribute("usuarioLogado") != null;
 
