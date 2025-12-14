@@ -36,4 +36,8 @@ public class EmprestimoDAO {
 
         return lista;
     }
+
+    public List<Emprestimo> listarPorUsuario(int usuarioId) {
+        return new ArrayList<>();
+    }
 }

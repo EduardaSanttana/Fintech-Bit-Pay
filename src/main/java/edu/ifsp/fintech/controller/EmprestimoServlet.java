@@ -14,28 +14,41 @@ import jakarta.servlet.http.HttpServletResponse;
 @WebServlet("/simular-emprestimo")
 public class EmprestimoServlet extends HttpServlet {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
+    private static final double TAXA_JUROS_MENSAL = 0.02;
 
-	private static final double TAXA_JUROS_MENSAL = 0.02;
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
 
-	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+        request.getRequestDispatcher("/paginas/Emprestimo.jsp")
+               .forward(request, response);
+    }
 
-		double valor = Double.parseDouble(request.getParameter("valor"));
-		int parcelas = Integer.parseInt(request.getParameter("parcelas"));
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
 
-		EmprestimoDAO dao = new EmprestimoDAO();
-		List<Emprestimo> tabela = dao.simularSAC(valor, TAXA_JUROS_MENSAL, parcelas);
+        double valor = Double.parseDouble(request.getParameter("valor"));
+        int parcelas = Integer.parseInt(request.getParameter("parcelas"));
 
-		double totalJuros = tabela.stream().mapToDouble(Emprestimo::getJuros).sum();
+        EmprestimoDAO dao = new EmprestimoDAO();
+        List<Emprestimo> tabela =
+                dao.simularSAC(valor, TAXA_JUROS_MENSAL, parcelas);
 
-		double totalPago = tabela.stream().mapToDouble(Emprestimo::getValorParcela).sum();
+        double totalJuros = tabela.stream()
+                                  .mapToDouble(Emprestimo::getJuros)
+                                  .sum();
 
-		request.setAttribute("tabela", tabela);
-		request.setAttribute("totalJuros", totalJuros);
-		request.setAttribute("totalPago", totalPago);
+        double totalPago = tabela.stream()
+                                 .mapToDouble(Emprestimo::getValorParcela)
+                                 .sum();
 
-		request.getRequestDispatcher("/paginas/resultadoEmprestimo.jsp").forward(request, response);
-	}
+        request.setAttribute("tabela", tabela);
+        request.setAttribute("totalJuros", totalJuros);
+        request.setAttribute("totalPago", totalPago);
+
+        request.getRequestDispatcher("/paginas/resultadoEmprestimo.jsp")
+               .forward(request, response);
+    }
 }
