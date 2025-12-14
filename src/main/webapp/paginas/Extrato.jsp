@@ -74,7 +74,7 @@
 
       <div class="flex justify-between mt-6">
         <a href="../extrato?pdf=1" class="btn btn-primary">Baixar PDF</a>
-        <a href="Index.jsp" class="btn btn-outline btn-primary">Voltar</a>
+        <a href="paginas/Index.jsp" class="btn btn-outline btn-primary">Voltar</a>
       </div>
 
     </div>

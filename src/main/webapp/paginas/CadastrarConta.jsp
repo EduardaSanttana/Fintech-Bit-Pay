@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -44,8 +43,33 @@
       </label>
 
       <label class="form-control">
-        <span class="label-text">Endereço</span>
-        <input name="endereco" class="input input-bordered h-9 text-sm" />
+        <span class="label-text">Data de nascimento</span>
+        <input name="dataNascimento" type="date" required class="input input-bordered h-9 text-sm" />
+      </label>
+
+      <label class="form-control">
+        <span class="label-text">Logradouro</span>
+        <input name="logradouro" class="input input-bordered h-9 text-sm" />
+      </label>
+
+      <label class="form-control">
+        <span class="label-text">Número</span>
+        <input name="numero" class="input input-bordered h-9 text-sm" />
+      </label>
+
+      <label class="form-control">
+        <span class="label-text">Bairro</span>
+        <input name="bairro" class="input input-bordered h-9 text-sm" />
+      </label>
+
+      <label class="form-control">
+        <span class="label-text">Cidade</span>
+        <input name="cidade" class="input input-bordered h-9 text-sm" />
+      </label>
+
+      <label class="form-control">
+        <span class="label-text">Estado</span>
+        <input name="estado" maxlength="2" class="input input-bordered h-9 text-sm" />
       </label>
 
       <label class="form-control">
@@ -60,7 +84,6 @@
     </form>
 
     <% String erroMsg = request.getParameter("erroMsg"); %>
-
     <% if (erroMsg != null) { %>
       <p class="text-error text-center mt-2"><%= erroMsg %></p>
     <% } %>

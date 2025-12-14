@@ -16,7 +16,6 @@
 
 <%
 Usuario u = (Usuario) session.getAttribute("usuarioLogado");
-
 if (u == null) {
     response.sendRedirect("paginas/Login.jsp");
     return;
@@ -44,8 +43,28 @@ if (u == null) {
       </label>
 
       <label class="form-control">
-        <span class="label-text">Endereço</span>
-        <input name="endereco" value="<%= u.getEndereco() %>" class="input input-bordered h-9 text-sm" />
+        <span class="label-text">Logradouro</span>
+        <input name="logradouro" value="<%= u.getLogradouro() %>" class="input input-bordered h-9 text-sm" />
+      </label>
+
+      <label class="form-control">
+        <span class="label-text">Número</span>
+        <input name="numero" value="<%= u.getNumero() %>" class="input input-bordered h-9 text-sm" />
+      </label>
+
+      <label class="form-control">
+        <span class="label-text">Bairro</span>
+        <input name="bairro" value="<%= u.getBairro() %>" class="input input-bordered h-9 text-sm" />
+      </label>
+
+      <label class="form-control">
+        <span class="label-text">Cidade</span>
+        <input name="cidade" value="<%= u.getCidade() %>" class="input input-bordered h-9 text-sm" />
+      </label>
+
+      <label class="form-control">
+        <span class="label-text">Estado</span>
+        <input name="estado" value="<%= u.getEstado() %>" maxlength="2" class="input input-bordered h-9 text-sm" />
       </label>
 
       <label class="form-control">
@@ -53,8 +72,7 @@ if (u == null) {
         <input name="telefone" value="<%= u.getTelefone() %>" class="input input-bordered h-9 text-sm" />
       </label>
 
-		
-        <input type="hidden" name="id" value="<%= u.getId() %>"/>
+      <input type="hidden" name="id" value="<%= u.getId() %>" />
 
       <button type="submit" class="btn btn-primary w-full mt-1">
         Salvar alterações
@@ -63,7 +81,6 @@ if (u == null) {
     </form>
 
     <% String erroMsg = request.getParameter("erroMsg"); %>
-
     <% if (erroMsg != null) { %>
       <p class="text-error text-center mt-2"><%= erroMsg %></p>
     <% } %>

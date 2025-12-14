@@ -1,6 +1,7 @@
 package edu.ifsp.fintech.controller;
 
 import java.io.IOException;
+import java.time.LocalDate;
 
 import edu.ifsp.fintech.modelo.Usuario;
 import edu.ifsp.fintech.persistencia.ContaDAO;
@@ -13,17 +14,25 @@ import jakarta.servlet.http.HttpServletResponse;
 @WebServlet("/cadastrar")
 public class CadastroUsuarioServlet extends HttpServlet {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-        throws IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
 
         Usuario u = new Usuario();
         u.setNome(request.getParameter("nome"));
         u.setEmail(request.getParameter("email"));
         u.setSenha(request.getParameter("senha"));
         u.setCpf(request.getParameter("cpf"));
-        u.setEndereco(request.getParameter("endereco"));
+
+        u.setDataNascimento(LocalDate.parse(request.getParameter("dataNascimento")));
+
+        u.setLogradouro(request.getParameter("logradouro"));
+        u.setNumero(request.getParameter("numero"));
+        u.setBairro(request.getParameter("bairro"));
+        u.setCidade(request.getParameter("cidade"));
+        u.setEstado(request.getParameter("estado"));
+
         u.setTelefone(request.getParameter("telefone"));
 
         try {
@@ -36,9 +45,9 @@ public class CadastroUsuarioServlet extends HttpServlet {
 
             usuarioDAO.salvar(u);
 
+            // cria conta com situação padrão ATIVA
             new ContaDAO().criarConta(u.getId());
 
-            // ok
             response.sendRedirect("paginas/Login.jsp?sucesso=1");
 
         } catch (Exception e) {

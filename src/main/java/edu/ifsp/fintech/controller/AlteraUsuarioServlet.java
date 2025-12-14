@@ -14,30 +14,38 @@ import jakarta.servlet.http.HttpServletResponse;
 @WebServlet("/alterar-usuario")
 public class AlteraUsuarioServlet extends HttpServlet {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-        throws IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
 
         Usuario u = new Usuario();
         u.setNome(request.getParameter("nome"));
         u.setEmail(request.getParameter("email"));
-        u.setEndereco(request.getParameter("endereco"));
+
+        u.setLogradouro(request.getParameter("logradouro"));
+        u.setNumero(request.getParameter("numero"));
+        u.setBairro(request.getParameter("bairro"));
+        u.setCidade(request.getParameter("cidade"));
+        u.setEstado(request.getParameter("estado"));
+
         u.setTelefone(request.getParameter("telefone"));
 
         try {
             UsuarioDAO usuarioDAO = new UsuarioDAO();
 
             int idUsuario = Integer.parseInt(request.getParameter("id"));
-            
+
             usuarioDAO.alterar(u, idUsuario);
 
-            Conta conta = new ContaDAO().buscarPorUsuario( idUsuario );
+            Conta conta = new ContaDAO().buscarPorUsuario(idUsuario);
 
             if (conta == null) {
                 response.sendRedirect("paginas/Erro.jsp?erro=conta");
                 return;
             }
+
+            u.setId(idUsuario);
 
             request.getSession().setAttribute("usuarioLogado", u);
             request.getSession().setAttribute("contaLogada", conta);
