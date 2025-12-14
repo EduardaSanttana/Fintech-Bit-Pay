@@ -20,14 +20,50 @@
   <div class="flex-1">
     <a class="btn btn-ghost normal-case text-2xl text-primary font-bold">Bit Pay</a>
   </div>
+
   <div class="flex-none gap-4 font-medium">
-    <a href="Index.jsp" class="btn btn-ghost">Dashboard</a>
-    <a href="../logout" class="btn btn-outline btn-primary">Sair</a>
+    <a href="${pageContext.request.contextPath}/paginas/Index.jsp" class="btn btn-ghost">Dashboard</a>
+
+    <a href="${pageContext.request.contextPath}/extrato" class="btn btn-ghost">Extrato</a>
+
+    <a href="${pageContext.request.contextPath}/logout" class="btn btn-outline btn-primary">Sair</a>
   </div>
 </div>
 
+
 <div class="max-w-4xl mx-auto mt-12 p-6">
   <h2 class="text-3xl font-bold text-primary mb-6">Extrato Bancário</h2>
+
+  <!-- FILTRO DE PERÍODO -->
+  <div class="card bg-base-100 shadow-xl mb-6">
+    <div class="card-body">
+
+        <form action="${pageContext.request.contextPath}/extrato" method="get"
+              class="grid grid-cols-1 md:grid-cols-3 gap-4">
+
+            <div>
+                <label class="label font-semibold">Data inicial</label>
+                <input type="date" name="inicio" class="input input-bordered w-full"
+                       value="<%= request.getParameter("inicio") != null ? request.getParameter("inicio") : "" %>"
+                       required>
+            </div>
+
+            <div>
+                <label class="label font-semibold">Data final</label>
+                <input type="date" name="fim" class="input input-bordered w-full"
+                       value="<%= request.getParameter("fim") != null ? request.getParameter("fim") : "" %>"
+                       required>
+            </div>
+
+            <div class="flex items-end">
+                <button class="btn btn-primary w-full">Filtrar</button>
+            </div>
+
+        </form>
+
+    </div>
+  </div>
+
 
   <div class="card bg-base-100 shadow-xl">
     <div class="card-body p-6">
@@ -45,11 +81,11 @@
 
           <tbody>
           <%
-	      List<Extrato> lista = (List<Extrato>) request.getAttribute("extratos");
-	      SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+            List<Extrato> lista = (List<Extrato>) request.getAttribute("extratos");
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
-          if (lista != null && !lista.isEmpty()) {
-              for (Extrato e : lista) {
+            if (lista != null && !lista.isEmpty()) {
+                for (Extrato e : lista) {
           %>
                 <tr>
                   <td><%= sdf.format(e.getDataHora()) %></td>
@@ -58,14 +94,14 @@
                   <td><%= e.getDescricao() %></td>
                 </tr>
           <%
-              }
-          } else {
+                }
+            } else {
           %>
                 <tr>
                   <td colspan="4" class="text-error text-center">Nenhum extrato encontrado.</td>
                 </tr>
           <%
-          }
+            }
           %>
           </tbody>
 
@@ -73,8 +109,16 @@
       </div>
 
       <div class="flex justify-between mt-6">
-        <a href="../extrato?pdf=1" class="btn btn-primary">Baixar PDF</a>
-        <a href="paginas/Index.jsp" class="btn btn-outline btn-primary">Voltar</a>
+
+        <!-- GERAR PDF -->
+        <form action="${pageContext.request.contextPath}/extrato/pdf" method="get">
+            <input type="hidden" name="inicio" value="<%= request.getParameter("inicio") %>">
+            <input type="hidden" name="fim" value="<%= request.getParameter("fim") %>">
+            <button class="btn btn-primary">Baixar PDF</button>
+        </form>
+
+        <a href="${pageContext.request.contextPath}/paginas/Index.jsp" 
+           class="btn btn-outline btn-primary">Voltar</a>
       </div>
 
     </div>

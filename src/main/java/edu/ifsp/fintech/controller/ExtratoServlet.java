@@ -1,41 +1,47 @@
 package edu.ifsp.fintech.controller;
 
+import edu.ifsp.fintech.persistencia.ExtratoDAO;
+import edu.ifsp.fintech.modelo.Extrato;
+
+import jakarta.servlet.*;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.*;
 import java.io.IOException;
 import java.util.List;
-
-import edu.ifsp.fintech.modelo.Conta;
-import edu.ifsp.fintech.modelo.Extrato;
-import edu.ifsp.fintech.persistencia.ExtratoDAO;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 
 @WebServlet("/extrato")
 public class ExtratoServlet extends HttpServlet {
 
-    private static final long serialVersionUID = 1L;
-
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws IOException {
-    	
-        Conta conta = (Conta) request.getSession().getAttribute("contaLogada");
-
-        if (conta == null) {
-            response.sendRedirect("paginas/Login.jsp");
-            return;
-        }
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
 
         try {
-            List<Extrato> lista = new ExtratoDAO().listar(conta.getId());
+            String inicio = req.getParameter("inicio");
+            String fim = req.getParameter("fim");
 
-            request.setAttribute("extratos", lista);
-            request.getRequestDispatcher("paginas/Extrato.jsp").forward(request, response);
+            int idConta = (int) req.getSession().getAttribute("idConta");
+
+            ExtratoDAO dao = new ExtratoDAO();
+
+            List<Extrato> lista;
+
+            // Se o usuário filtrou por período
+            if (inicio != null && fim != null && 
+                !inicio.isEmpty() && !fim.isEmpty()) {
+
+                lista = dao.listarPorPeriodo(idConta, inicio, fim);
+
+            } else {
+                // Se abriu o extrato sem filtro
+                lista = dao.listarTodos(idConta);
+            }
+
+            req.setAttribute("extratos", lista);
+            req.getRequestDispatcher("/paginas/Extrato.jsp").forward(req, resp);
 
         } catch (Exception e) {
-            e.printStackTrace();
-            response.sendRedirect("paginas/Extrato.jsp?erro=1");
+            throw new ServletException("Erro ao buscar extrato", e);
         }
     }
 }

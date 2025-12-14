@@ -14,10 +14,10 @@ import jakarta.servlet.http.HttpServletResponse;
 @WebServlet("/login")
 public class LoginUsuarioServlet extends HttpServlet {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-        throws IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
 
         String email = request.getParameter("email");
         String senha = request.getParameter("senha");
@@ -34,8 +34,12 @@ public class LoginUsuarioServlet extends HttpServlet {
                     return;
                 }
 
+                // SALVAR NA SESSÃO
                 request.getSession().setAttribute("usuarioLogado", usuario);
                 request.getSession().setAttribute("contaLogada", conta);
+
+                // ⭐ ESSA LINHA É O QUE FALTAVA !!!
+                request.getSession().setAttribute("idConta", conta.getId());
 
                 response.sendRedirect("paginas/Index.jsp");
             } else {
