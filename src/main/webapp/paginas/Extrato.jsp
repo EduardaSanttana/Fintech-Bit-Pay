@@ -93,6 +93,7 @@ if (u == null || c == null) {
                 </h2>
             </div>
 
+            <!-- FORM DE FILTRO -->
             <form action="${pageContext.request.contextPath}/extrato"
                   method="get"
                   class="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -101,16 +102,18 @@ if (u == null || c == null) {
                     <label class="label font-semibold">Data inicial</label>
                     <input type="date" name="inicio"
                            class="input input-bordered w-full"
-                           value="<%= request.getParameter("inicio") != null ? request.getParameter("inicio") : "" %>"
-                           required>
+                           value="<%= request.getParameter("inicio") != null 
+                                  && !request.getParameter("inicio").equals("null") 
+                                  ? request.getParameter("inicio") : "" %>">
                 </div>
 
                 <div>
                     <label class="label font-semibold">Data final</label>
                     <input type="date" name="fim"
                            class="input input-bordered w-full"
-                           value="<%= request.getParameter("fim") != null ? request.getParameter("fim") : "" %>"
-                           required>
+                           value="<%= request.getParameter("fim") != null 
+                                  && !request.getParameter("fim").equals("null") 
+                                  ? request.getParameter("fim") : "" %>">
                 </div>
 
                 <div class="flex items-end">
@@ -121,6 +124,7 @@ if (u == null || c == null) {
 
             </form>
 
+            <!-- TABELA DO EXTRATO -->
             <div class="overflow-x-auto">
                 <table class="table table-zebra w-full">
                     <thead>
@@ -165,13 +169,21 @@ if (u == null || c == null) {
                 </table>
             </div>
 
+            <!-- BOTÃO PARA DOWNLOAD DO PDF -->
             <div class="flex justify-end">
                 <form action="${pageContext.request.contextPath}/extrato/pdf"
                       method="get">
+
                     <input type="hidden" name="inicio"
-                           value="<%= request.getParameter("inicio") %>">
+                           value="<%= request.getParameter("inicio") == null 
+                                   || request.getParameter("inicio").equals("null")
+                                   ? "" : request.getParameter("inicio") %>">
+
                     <input type="hidden" name="fim"
-                           value="<%= request.getParameter("fim") %>">
+                           value="<%= request.getParameter("fim") == null 
+                                   || request.getParameter("fim").equals("null")
+                                   ? "" : request.getParameter("fim") %>">
+
                     <button class="btn btn-primary">
                         Baixar PDF
                     </button>
