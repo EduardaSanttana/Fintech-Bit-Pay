@@ -2,6 +2,7 @@ package edu.ifsp.fintech.persistencia;
 
 import java.sql.*;
 import edu.ifsp.fintech.modelo.Usuario;
+import edu.ifsp.fintech.util.Criptografia;
 
 public class UsuarioDAO {
 
@@ -11,14 +12,17 @@ public class UsuarioDAO {
 
     public void salvar(Usuario u) throws Exception {
 
-        String sql = "INSERT INTO USUARIOS (NOME, EMAIL, SENHA, CPF, DATA_NASCIMENTO, LOGRADOURO, NUMERO, BAIRRO, CIDADE, ESTADO, TELEFONE) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+        String senhaMD5 = Criptografia.md5(u.getSenha());
+
+        String sql = "INSERT INTO USUARIOS (NOME, EMAIL, SENHA, CPF, DATA_NASCIMENTO, LOGRADOURO, NUMERO, BAIRRO, CIDADE, ESTADO, TELEFONE) " +
+                     "VALUES (?,?,?,?,?,?,?,?,?,?,?)";
 
         try (Connection con = getConnection();
              PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             ps.setString(1, u.getNome());
             ps.setString(2, u.getEmail());
-            ps.setString(3, u.getSenha());
+            ps.setString(3, senhaMD5);
             ps.setString(4, u.getCpf());
             ps.setDate(5, Date.valueOf(u.getDataNascimento()));
             ps.setString(6, u.getLogradouro());
@@ -39,13 +43,15 @@ public class UsuarioDAO {
 
     public Usuario login(String email, String senha) throws Exception {
 
+        String senhaMD5 = Criptografia.md5(senha);
+
         String sql = "SELECT * FROM USUARIOS WHERE EMAIL=? AND SENHA=?";
 
         try (Connection con = getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setString(1, email);
-            ps.setString(2, senha);
+            ps.setString(2, senhaMD5);
 
             ResultSet rs = ps.executeQuery();
 

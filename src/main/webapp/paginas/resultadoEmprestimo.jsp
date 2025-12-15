@@ -1,6 +1,3 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-
 <%@ page import="java.util.List"%>
 <%@ page import="edu.ifsp.fintech.modelo.SimulacaoEmprestimo"%>
 <%@ page import="edu.ifsp.fintech.modelo.Conta"%>
@@ -23,7 +20,7 @@
     <div class="card bg-base-100 shadow-xl">
         <div class="card-body">
 
-            <h2 class="card-title text-2xl text-primary">Resultado da SimulaÃ§Ã£o</h2>
+            <h2 class="card-title text-2xl text-primary">Resultado da Simulação</h2>
 
             <div class="overflow-x-auto mt-6">
                 <table class="table table-zebra w-full">
@@ -32,7 +29,7 @@
                             <th>Parcela</th>
                             <th>Saldo Devedor</th>
                             <th>Juros</th>
-                            <th>AmortizaÃ§Ã£o</th>
+                            <th>Amortização</th>
                             <th>Valor da Parcela</th>
                         </tr>
                     </thead>
@@ -83,7 +80,7 @@
 
             <div class="mt-8 flex flex-col md:flex-row gap-4">
 
-                <a href="<%= request.getContextPath() %>/paginas/Emprestimo.jsp" class="btn btn-outline flex-1"> Nova SimulaÃ§Ã£o </a>
+                <a href="<%= request.getContextPath() %>/paginas/Emprestimo.jsp" class="btn btn-outline flex-1"> Nova Simulação </a>
 
                 <form action="<%= request.getContextPath() %>/emprestimos" method="post" class="flex-1">
 
@@ -94,7 +91,7 @@
                     <input type="hidden" name="valorTotal" value="<%= request.getAttribute("totalPago") %>" />
 
                     <button type="submit" class="btn btn-primary w-full">
-                        Finalizar EmprÃ©stimo
+                        Finalizar Empréstimo
                     </button>
                 </form>
 

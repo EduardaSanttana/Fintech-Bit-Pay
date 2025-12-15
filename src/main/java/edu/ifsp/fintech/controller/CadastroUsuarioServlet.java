@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import edu.ifsp.fintech.modelo.Usuario;
 import edu.ifsp.fintech.persistencia.ContaDAO;
 import edu.ifsp.fintech.persistencia.UsuarioDAO;
+import edu.ifsp.fintech.util.Criptografia;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,11 +23,11 @@ public class CadastroUsuarioServlet extends HttpServlet {
         Usuario u = new Usuario();
         u.setNome(request.getParameter("nome"));
         u.setEmail(request.getParameter("email"));
-        u.setSenha(request.getParameter("senha"));
+        String senha = request.getParameter("senha");
+        String senhaMD5 = Criptografia.md5(senha);
+        u.setSenha(senhaMD5);
         u.setCpf(request.getParameter("cpf"));
-
         u.setDataNascimento(LocalDate.parse(request.getParameter("dataNascimento")));
-
         u.setLogradouro(request.getParameter("logradouro"));
         u.setNumero(request.getParameter("numero"));
         u.setBairro(request.getParameter("bairro"));
