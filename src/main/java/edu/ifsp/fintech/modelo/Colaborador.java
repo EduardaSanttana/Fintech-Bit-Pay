@@ -6,22 +6,13 @@ public class Colaborador {
     private String email;
     private String senha;
     private String cpf;
-    private String endereco;
     private String telefone;
+    private String logradouro;
+    private String numero;
+    private String bairro;
+    private String cidade;
+    private String estado;
     private String funcao;
-    
-    public Colaborador() {}
-    
-    public Colaborador(int id, String nome, String email, String senha, String cpf, String endereco, String telefone, String funcao) {
-        this.id = id;
-        this.nome = nome;
-        this.email = email;
-        this.senha = senha;
-        this.endereco = endereco;
-        this.cpf = cpf;
-        this.telefone = telefone;
-        this.funcao = funcao;
-    }
 
     public int getId() {
         return id;
@@ -62,22 +53,55 @@ public class Colaborador {
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
 	}
+    
 
-	public String getEndereco() {
-		return endereco;
-	}
+    public String getLogradouro() {
+        return logradouro;
+    }
 
-	public void setEndereco(String endereco) {
-		this.endereco = endereco;
-	}
+    public void setLogradouro(String logradouro) {
+        this.logradouro = logradouro;
+    }
 
-	public String getTelefone() {
-		return telefone;
-	}
+    public String getNumero() {
+        return numero;
+    }
 
-	public void setTelefone(String telefone) {
-		this.telefone = telefone;
-	} 
+    public void setNumero(String numero) {
+        this.numero = numero;
+    }
+
+    public String getBairro() {
+        return bairro;
+    }
+
+    public void setBairro(String bairro) {
+        this.bairro = bairro;
+    }
+
+    public String getCidade() {
+        return cidade;
+    }
+
+    public void setCidade(String cidade) {
+        this.cidade = cidade;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
+    }
 	
 	public String getFuncao() {
 		return funcao;
