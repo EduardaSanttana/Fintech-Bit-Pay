@@ -12,8 +12,6 @@ public class UsuarioDAO {
 
     public void salvar(Usuario u) throws Exception {
 
-        String senhaMD5 = Criptografia.md5(u.getSenha());
-
         String sql = "INSERT INTO USUARIOS (NOME, EMAIL, SENHA, CPF, DATA_NASCIMENTO, LOGRADOURO, NUMERO, BAIRRO, CIDADE, ESTADO, TELEFONE) " +
                      "VALUES (?,?,?,?,?,?,?,?,?,?,?)";
 
@@ -22,7 +20,7 @@ public class UsuarioDAO {
 
             ps.setString(1, u.getNome());
             ps.setString(2, u.getEmail());
-            ps.setString(3, senhaMD5);
+            ps.setString(3, u.getSenha());
             ps.setString(4, u.getCpf());
             ps.setDate(5, Date.valueOf(u.getDataNascimento()));
             ps.setString(6, u.getLogradouro());
