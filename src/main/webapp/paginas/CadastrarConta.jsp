@@ -1,5 +1,3 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -64,7 +62,7 @@
 					<label class="form-control col-span-2"> <span
 						class="label-text">Logradouro</span> <input name="logradouro"
 						class="input input-bordered h-10 text-sm" />
-					</label> <label class="form-control"> <span class="label-text">NÃºmero</span>
+					</label> <label class="form-control"> <span class="label-text">Número</span>
 						<input name="numero" class="input input-bordered h-10 text-sm" />
 					</label>
 				</div>
