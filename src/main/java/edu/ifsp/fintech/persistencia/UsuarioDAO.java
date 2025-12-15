@@ -107,6 +107,23 @@ public class UsuarioDAO {
             ps.setInt(9, id);
 
             ps.executeUpdate();
+        }        
+    }
+    
+    public void atualizarSenhaPorEmail(String email, String novaSenha) throws Exception {
+
+        String senhaMD5 = Criptografia.md5(novaSenha);
+
+        String sql = "UPDATE USUARIOS SET SENHA = ? WHERE EMAIL = ?";
+
+        try (Connection con = getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, senhaMD5);
+            ps.setString(2, email);
+
+            ps.executeUpdate();
         }
     }
+
 }

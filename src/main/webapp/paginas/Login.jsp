@@ -52,7 +52,13 @@
 
 				<button type="submit" class="btn btn-primary w-full mt-2">
 					Entrar</button>
-
+				
+				<div class="text-center mt-3">
+    					<a class="link link-primary text-sm"
+       						href="${pageContext.request.contextPath}/paginas/RecuperarSenha.jsp">
+       						 Esqueci minha senha
+   						</a>
+				</div>
 			</form>
 
 			<div class="text-center mt-4 text-sm text-base-content/70">

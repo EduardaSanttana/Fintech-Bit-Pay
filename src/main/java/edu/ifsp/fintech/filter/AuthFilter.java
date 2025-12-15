@@ -28,6 +28,12 @@ public class AuthFilter implements Filter {
                 url.endsWith("CriarConta.jsp") ||
                 url.contains("login") ||
                 url.contains("cadastrar") ||
+
+                // 🔓 LIBERAR RECUPERAR SENHA
+                url.contains("RecuperarSenha.jsp") ||
+                url.contains("recuperar-senha") ||
+
+                // recursos estáticos
                 url.contains("css") ||
                 url.contains("js") ||
                 url.contains("png") ||
