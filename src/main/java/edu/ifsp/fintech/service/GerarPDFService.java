@@ -22,19 +22,12 @@ public class GerarPDFService {
 
             documento.open();
 
-            // =============================
-            //     TÍTULO
-            // =============================
             Font titulo = new Font(Font.FontFamily.HELVETICA, 18, Font.BOLD);
             Paragraph pTitulo = new Paragraph("Extrato Bancário - Fintech Bit Pay", titulo);
             pTitulo.setAlignment(Element.ALIGN_CENTER);
             documento.add(pTitulo);
-            documento.add(new Paragraph(" ")); // Espaço
+            documento.add(new Paragraph(" ")); 
 
-
-            // =============================
-            //     PERÍODO SELECIONADO
-            // =============================
             Font normal = new Font(Font.FontFamily.HELVETICA, 12);
 
             documento.add(new Paragraph(
@@ -43,10 +36,6 @@ public class GerarPDFService {
             ));
             documento.add(new Paragraph(" "));
 
-
-            // =============================
-            //     SE NÃO EXISTE MOVIMENTAÇÃO
-            // =============================
             if (lista == null || lista.isEmpty()) {
                 Font semMov = new Font(Font.FontFamily.HELVETICA, 14, Font.ITALIC);
                 Paragraph aviso = new Paragraph("Nenhuma movimentação encontrada para o período selecionado.", semMov);
@@ -56,15 +45,10 @@ public class GerarPDFService {
                 return saida.toByteArray();
             }
 
-
-            // =============================
-            //     TABELA DO EXTRATO
-            // =============================
             PdfPTable tabela = new PdfPTable(4);
             tabela.setWidthPercentage(100);
             tabela.setWidths(new float[]{2f, 2f, 2f, 4f});
 
-            // Cabeçalho
             Font cabecalho = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
 
             tabela.addCell(new PdfPCell(new Phrase("Data", cabecalho)));

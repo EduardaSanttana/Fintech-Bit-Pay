@@ -15,7 +15,9 @@ import jakarta.servlet.http.*;
 @WebServlet("/minhas-aplicacoes")
 public class MinhasAplicacoesServlet extends HttpServlet {
 
-    @Override
+	private static final long serialVersionUID = 1L;
+
+	@Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 

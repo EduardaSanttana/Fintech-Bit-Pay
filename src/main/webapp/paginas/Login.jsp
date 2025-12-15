@@ -48,22 +48,20 @@
 				</label> <label class="form-control"> <span class="label-text">Senha</span>
 					<input name="senha" type="password" required
 					class="input input-bordered h-10 text-sm" />
+				</label> <label class="form-control"> <span class="label-text">Tipo
+						de usuário</span> <select name="tipo_usuario" required
+					class="select select-bordered">
+						<option value="1">Cliente</option>
+						<option value="2">Gerente</option>
+				</select>
 				</label>
 
-                <label class="form-control">
-                    <span class="label-text">Tipo de usuário</span>
-                    <select name="tipo_usuario" required class="select select-bordered">
-                        <option value="1">Cliente</option>
-                        <option value="2">Gerente</option>
-                    </select>
-                </label>
-
 				<button type="submit" class="btn btn-primary w-full mt-2">Entrar</button>
-				
+
 				<div class="text-center mt-3">
-                    <a class="link link-primary text-sm" href="${pageContext.request.contextPath}/paginas/RecuperarSenha.jsp">
-                        Esqueci minha senha
-                    </a>
+					<a class="link link-primary text-sm"
+						href="${pageContext.request.contextPath}/paginas/RecuperarSenha.jsp">
+						Esqueci minha senha </a>
 				</div>
 			</form>
 
@@ -72,15 +70,11 @@
 					class="link link-primary font-medium"> Criar conta </a>
 			</div>
 
-            <% if ("conta".equals(request.getParameter("erro"))) { %>
-                <p class="text-error text-center mt-3">Conta pendente de aprovação ou inexistente</p>
-            <% } else if (request.getParameter("erro") != null) { %>
-                <p class="text-error text-center mt-3">Usuário ou senha inválidos</p>
-            <% } %>
-
-			<% if (request.getParameter("sucesso") != null) { %>
-			<p class="text-success text-center mt-3">Conta criada com
-				sucesso! Faça login.</p>
+			<% if ("conta".equals(request.getParameter("erro"))) { %>
+			<p class="text-error text-center mt-3">Conta pendente de
+				aprovação ou inexistente</p>
+			<% } else if (request.getParameter("erro") != null) { %>
+			<p class="text-error text-center mt-3">Usuário ou senha inválidos</p>
 			<% } %>
 
 		</div>

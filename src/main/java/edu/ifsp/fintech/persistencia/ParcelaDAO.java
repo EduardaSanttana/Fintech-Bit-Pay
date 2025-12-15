@@ -12,11 +12,7 @@ public class ParcelaDAO {
 	}
 
 	public void salvar(Parcela p) throws Exception {
-		String sql = """
-				    INSERT INTO PARCELAS
-				    (EMPRESTIMO_ID, NUMERO, VALOR, DATA_VENCIMENTO, STATUS)
-				    VALUES (?, ?, ?, ?, ?)
-				""";
+		String sql = " INSERT INTO PARCELAS (EMPRESTIMO_ID, NUMERO, VALOR, DATA_VENCIMENTO, STATUS) VALUES (?, ?, ?, ?, ?)";
 
 		try (Connection con = getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 
@@ -33,13 +29,7 @@ public class ParcelaDAO {
 	public List<Parcela> listarPendentesPorConta(int contaId) throws Exception {
 		List<Parcela> lista = new ArrayList<>();
 
-		String sql = """
-				    SELECT p.*
-				    FROM PARCELAS p
-				    JOIN EMPRESTIMOS e ON e.ID = p.EMPRESTIMO_ID
-				    WHERE e.CONTA_ID = ? AND p.STATUS = 'PENDENTE'
-				    ORDER BY p.DATA_VENCIMENTO
-				""";
+		String sql = "SELECT p.* FROM PARCELAS p JOIN EMPRESTIMOS e ON e.ID = p.EMPRESTIMO_ID WHERE e.CONTA_ID = ? AND p.STATUS = 'PENDENTE' ORDER BY p.DATA_VENCIMENTO";
 
 		try (Connection con = getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 
@@ -88,11 +78,7 @@ public class ParcelaDAO {
 	}
 
 	public boolean todasPagas(int emprestimoId) throws Exception {
-		String sql = """
-				    SELECT COUNT(*)
-				    FROM PARCELAS
-				    WHERE EMPRESTIMO_ID = ? AND STATUS = 'PENDENTE'
-				""";
+		String sql = "SELECT COUNT(*) FROM PARCELAS WHERE EMPRESTIMO_ID = ? AND STATUS = 'PENDENTE' ";
 
 		try (Connection con = getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 
