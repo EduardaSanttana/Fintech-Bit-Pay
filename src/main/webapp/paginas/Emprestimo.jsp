@@ -61,7 +61,7 @@ if (u == null || c == null) {
 		</div>
 	</div>
 
-	<div class="max-w-6xl mx-auto pt-12">
+	<div class="max-w-xl mx-auto pt-12">
 
 		<div class="card bg-base-100 border border-base-300 rounded-2xl">
 			<div class="card-body space-y-6">
@@ -147,7 +147,7 @@ if (u == null || c == null) {
 					<div role="tabpanel" class="tab-content pt-6">
 
 						<form action="<%= request.getContextPath() %>/emprestimos"
-							method="post" class="space-y-4 max-w-md">
+							method="post" class="space-y-4 max-w-xl">
 
 							<input type="hidden" name="acao" value="simular" />
 
