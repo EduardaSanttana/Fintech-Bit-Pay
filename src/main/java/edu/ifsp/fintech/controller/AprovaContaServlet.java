@@ -27,7 +27,7 @@ public class AprovaContaServlet extends HttpServlet {
 
         } catch (Exception e) {
             e.printStackTrace();
-            response.sendRedirect("paginas/Index.jsp?erro=1");
+            response.sendRedirect("paginas/IndexColaborador.jsp?erro=1");
         }
     }
 }

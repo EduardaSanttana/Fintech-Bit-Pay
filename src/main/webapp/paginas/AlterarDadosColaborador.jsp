@@ -31,7 +31,7 @@
 
 		<div class="relative flex items-center justify-center h-14 mb-2">
 
-			<a href="Index.jsp"
+			<a href="IndexColaborador.jsp"
 				class="absolute left-4 btn btn-ghost btn-sm btn-circle text-primary">
 				<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
@@ -39,53 +39,54 @@
 			</a>
 
 			<h2 class="text-3xl font-extrabold text-primary tracking-wide">
-				<a href="Index.jsp">Bit Pay</a>
+				<a href="IndexColaborador.jsp">Bit Pay</a>
 			</h2>
-
 		</div>
-
 
 		<div class="card-body pt-4 px-6 pb-6">
 
 			<form action="../alterar-colaborador" method="post"
 				class="grid grid-cols-1 gap-3">
 
-				<label class="form-control"> <span class="label-text">Nome</span>
+				<label class="form-control">
+                    <span class="label-text">Nome</span>
 					<input name="nome" value="<%= u.getNome() %>" required class="input input-bordered h-10 text-sm" />
-				</label> <label class="form-control"> <span class="label-text">Email</span>
-					<input name="email" value="<%= u.getEmail() %>" type="email" required class="input input-bordered h-10 text-sm" />
+				</label>
+                <label class="form-control">
+                    <span class="label-text">Email</span>
+					<input name="email" value="<%= u.getEmail() != null ? u.getEmail() : "" %>" type="email" required class="input input-bordered h-10 text-sm" />
 				</label>
 
 				<div class="grid grid-cols-3 gap-3">
 					<label class="form-control col-span-2">
                         <span class="label-text">Logradouro</span>
-                        <input name="logradouro" value="<%= u.getLogradouro() %>" class="input input-bordered h-10 text-sm" />
+                        <input name="logradouro" value="<%= u.getLogradouro() != null ? u.getLogradouro() : "" %>" class="input input-bordered h-10 text-sm" />
 					</label>
                     <label class="form-control">
                         <span class="label-text">Número</span>
-						<input name="numero" value="<%= u.getNumero() %>" class="input input-bordered h-10 text-sm" />
+						<input name="numero" value="<%= u.getNumero() != null ? u.getNumero() : "" %>" class="input input-bordered h-10 text-sm" />
 					</label>
 				</div>
 
 				<label class="form-control">
                     <span class="label-text">Bairro</span>
-					<input name="bairro" value="<%= u.getBairro() %>" class="input input-bordered h-10 text-sm" />
+					<input name="bairro" value="<%= u.getBairro() != null ? u.getBairro() : "" %>" class="input input-bordered h-10 text-sm" />
 				</label>
 
 				<div class="grid grid-cols-3 gap-3">
 					<label class="form-control col-span-2">
                         <span class="label-text">Cidade</span>
-                        <input name="cidade" value="<%= u.getCidade() %>" class="input input-bordered h-10 text-sm" />
+                        <input name="cidade" value="<%= u.getCidade() != null ? u.getCidade() : "" %>" class="input input-bordered h-10 text-sm" />
 					</label>
                     <label class="form-control">
                         <span class="label-text">Estado</span>
-						<input name="estado" value="<%= u.getEstado() %>" maxlength="2" class="input input-bordered h-10 text-sm uppercase" />
+						<input name="estado" value="<%= u.getEstado() != null ? u.getEstado() : "" %>" maxlength="2" class="input input-bordered h-10 text-sm uppercase" />
 					</label>
 				</div>
 
 				<label class="form-control">
                     <span class="label-text">Telefone</span>
-					<input name="telefone" value="<%= u.getTelefone() %>" class="input input-bordered h-10 text-sm" />
+					<input name="telefone" value="<%= u.getTelefone() != null ? u.getTelefone() : "" %>" class="input input-bordered h-10 text-sm" />
 				</label>
                 <input type="hidden" name="id" value="<%= u.getId() %>" />
 

@@ -36,14 +36,14 @@ public class LoginUsuarioServlet extends HttpServlet {
                     Conta conta = new ContaDAO().buscarPorUsuario(usuario.getId());
 
                     if (conta == null) {
-                        response.sendRedirect("paginas/Erro.jsp?erro=conta");
+                        response.sendRedirect("paginas/Login.jsp?erro=conta");
                         return;
                     }
 
                     // SALVAR NA SESSÃO
                     request.getSession().setAttribute("usuarioLogado", usuario);
                     request.getSession().setAttribute("contaLogada", conta);
-                    request.getSession().setAttribute("tipoUsuario", 2);
+                    request.getSession().setAttribute("tipoUsuario", 1);
 
                     // ⭐ ESSA LINHA É O QUE FALTAVA !!!
                     request.getSession().setAttribute("idConta", conta.getId());
@@ -61,7 +61,7 @@ public class LoginUsuarioServlet extends HttpServlet {
                     request.getSession().setAttribute("contaLogada", null);
                     request.getSession().setAttribute("tipoUsuario", 2);
 
-                    response.sendRedirect("paginas/Index.jsp");
+                    response.sendRedirect("paginas/IndexColaborador.jsp");
                 } else {
                     response.sendRedirect("paginas/Login.jsp?erro=1");
                 }

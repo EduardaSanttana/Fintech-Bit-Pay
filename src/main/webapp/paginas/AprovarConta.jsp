@@ -2,24 +2,32 @@
 <%@ page import="
     java.util.*, 
     java.text.SimpleDateFormat,
-    edu.ifsp.fintech.modelo.Conta
+    edu.ifsp.fintech.modelo.Conta,
+    edu.ifsp.fintech.modelo.Colaborador
 " %>
 
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-<meta charset="UTF-8">
-<title>Fintech Bit Pay - Aprovar contas</title>
-<link href="https://cdn.jsdelivr.net/npm/daisyui@4.7.2/dist/full.min.css" rel="stylesheet" />
-<script src="https://cdn.tailwindcss.com"></script>
+    <meta charset="UTF-8">
+    <title>Fintech Bit Pay - Aprovar contas</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.7.2/dist/full.min.css" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
 <body class="bg-base-200 min-h-screen">
 
+<%
+    Colaborador u = (Colaborador) session.getAttribute("usuarioLogado");
+    if (u == null) {
+        response.sendRedirect("paginas/Login.jsp");
+        return;
+    }
+%>
+
 <div class="navbar bg-base-100 shadow">
     <div class="flex-1">
-        <a class="btn btn-ghost normal-case text-2xl text-primary font-bold">
-            Bit Pay </a>
+        <a class="btn btn-ghost normal-case text-2xl text-primary font-bold">Bit Pay </a>
     </div>
 
     <div class="flex-none gap-4 font-medium items-center">
@@ -35,10 +43,9 @@
                 </div>
             </label>
 
-            <ul tabindex="0"
-                class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-44 mt-3">
+            <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-44 mt-3">
                 <li><a href="AlterarDadosUsuario.jsp">Editar dados</a></li>
-                <li><a href="../logout" class="text-error">Sair</a></li>
+                <li><a href="<%=request.getContextPath()%>/logout" class="text-error">Sair</a></li>
             </ul>
         </div>
     </div>
@@ -104,7 +111,7 @@
       </div>
 
       <div class="flex justify-between mt-6">
-        <a href="${pageContext.request.contextPath}/paginas/Index.jsp" class="btn btn-outline btn-primary">Voltar</a>
+        <a href="${pageContext.request.contextPath}/paginas/IndexColaborador.jsp" class="btn btn-outline btn-primary">Voltar</a>
       </div>
 
     </div>

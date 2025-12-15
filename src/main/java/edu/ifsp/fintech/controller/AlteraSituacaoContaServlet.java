@@ -24,7 +24,7 @@ public class AlteraSituacaoContaServlet extends HttpServlet {
             if ("aprovar".equals(acao)) {
             	new ContaDAO().atualizarSituacao(idConta, "ATIVA");
             } else if ("reprovar".equals(acao)) {
-            	new ContaDAO().atualizarSituacao(idConta, "INAVTIVA");
+            	new ContaDAO().atualizarSituacao(idConta, "INATIVA");
             }
 
             response.sendRedirect(request.getContextPath() + "/aprovar-contas");
