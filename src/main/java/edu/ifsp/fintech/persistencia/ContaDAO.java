@@ -8,116 +8,119 @@ import edu.ifsp.fintech.modelo.Conta;
 public class ContaDAO {
 
 	private Connection getConnection() throws Exception {
-	    return ConexaoBD.getConnection();
+		return ConexaoBD.getConnection();
 	}
 
+	public void criarConta(int usuarioId) throws Exception {
+		String sql = "INSERT INTO CONTAS (USUARIO_ID, NUMERO_CONTA, SALDO) VALUES (?, ?, 0.00)";
 
-    public void criarConta(int usuarioId) throws Exception {
-        String sql = "INSERT INTO CONTAS (USUARIO_ID, NUMERO_CONTA, SALDO) VALUES (?, ?, 0.00)";
+		try (Connection con = getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 
-        try (Connection con = getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+			String numero = "BIT" + (int) (Math.random() * 999999);
 
-            String numero = "BIT" + (int)(Math.random() * 999999);
+			ps.setInt(1, usuarioId);
+			ps.setString(2, numero);
 
-            ps.setInt(1, usuarioId);
-            ps.setString(2, numero);
+			ps.executeUpdate();
+		}
+	}
 
-            ps.executeUpdate();
-        }
-    }
+	public Conta buscarPorUsuario(int usuarioId) throws Exception {
+		String sql = "SELECT * FROM CONTAS WHERE USUARIO_ID=?";
 
-    public Conta buscarPorUsuario(int usuarioId) throws Exception {
-        String sql = "SELECT * FROM CONTAS WHERE USUARIO_ID=?";
+		try (Connection con = getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 
-        try (Connection con = getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+			ps.setInt(1, usuarioId);
 
-            ps.setInt(1, usuarioId);
+			ResultSet rs = ps.executeQuery();
 
-            ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				Conta c = new Conta();
+				c.setId(rs.getInt("ID"));
+				c.setUsuarioId(rs.getInt("USUARIO_ID"));
+				c.setNumeroConta(rs.getString("NUMERO_CONTA"));
+				c.setSaldo(rs.getBigDecimal("SALDO"));
+				return c;
+			}
+		}
+		return null;
+	}
 
-            if (rs.next()) {
-                Conta c = new Conta();
-                c.setId(rs.getInt("ID"));
-                c.setUsuarioId(rs.getInt("USUARIO_ID"));
-                c.setNumeroConta(rs.getString("NUMERO_CONTA"));
-                c.setSaldo(rs.getBigDecimal("SALDO"));
-                return c;
-            }
-        }
-        return null;
-    }
-    
-    public void atualizarSaldo(int contaId, BigDecimal novoSaldo) throws Exception {
-        String sql = "UPDATE CONTAS SET SALDO=? WHERE ID=?";
-        
-        try (Connection con = getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+	public void atualizarSaldo(int contaId, BigDecimal novoSaldo) throws Exception {
+		String sql = "UPDATE CONTAS SET SALDO=? WHERE ID=?";
 
-            ps.setBigDecimal(1, novoSaldo);
-            ps.setInt(2, contaId);
-            ps.executeUpdate();
-        }
-    }
+		try (Connection con = getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 
-    public Conta buscarPorId(int contaId) throws Exception {
-        String sql = "SELECT * FROM CONTAS WHERE ID=?";
+			ps.setBigDecimal(1, novoSaldo);
+			ps.setInt(2, contaId);
+			ps.executeUpdate();
+		}
+	}
 
-        try (Connection con = getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+	public Conta buscarPorId(int contaId) throws Exception {
+		String sql = "SELECT * FROM CONTAS WHERE ID=?";
 
-            ps.setInt(1, contaId);
+		try (Connection con = getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 
-            ResultSet rs = ps.executeQuery();
+			ps.setInt(1, contaId);
 
-            if (rs.next()) {
-                Conta c = new Conta();
-                c.setId(rs.getInt("ID"));
-                c.setUsuarioId(rs.getInt("USUARIO_ID"));
-                c.setNumeroConta(rs.getString("NUMERO_CONTA"));
-                c.setSaldo(rs.getBigDecimal("SALDO"));
-                return c;
-            }
-        }
-        return null;
-    }
-    
-    public Conta buscarPorNumero(String numeroConta) throws Exception {
-        String sql = "SELECT * FROM CONTAS WHERE NUMERO_CONTA=?";
+			ResultSet rs = ps.executeQuery();
 
-        try (Connection con = getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+			if (rs.next()) {
+				Conta c = new Conta();
+				c.setId(rs.getInt("ID"));
+				c.setUsuarioId(rs.getInt("USUARIO_ID"));
+				c.setNumeroConta(rs.getString("NUMERO_CONTA"));
+				c.setSaldo(rs.getBigDecimal("SALDO"));
+				return c;
+			}
+		}
+		return null;
+	}
 
-            ps.setString(1, numeroConta);
+	public Conta buscarPorNumero(String numeroConta) throws Exception {
+		String sql = "SELECT * FROM CONTAS WHERE NUMERO_CONTA=?";
 
-            ResultSet rs = ps.executeQuery();
+		try (Connection con = getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 
-            if (rs.next()) {
-                Conta c = new Conta();
-                c.setId(rs.getInt("ID"));
-                c.setUsuarioId(rs.getInt("USUARIO_ID"));
-                c.setNumeroConta(rs.getString("NUMERO_CONTA"));
-                c.setSaldo(rs.getBigDecimal("SALDO"));
-                return c;
-            }
-        }
-        return null;
-    }
-    
-    public void registrarExtrato(int contaId, String tipo, BigDecimal valor, String descricao) throws Exception {
-        String sql = "INSERT INTO EXTRATOS (CONTA_ID, TIPO, VALOR, DESCRICAO) VALUES (?, ?, ?, ?)";
-        
-        try (Connection con = getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
-            
-            ps.setInt(1, contaId);
-            ps.setString(2, tipo);
-            ps.setBigDecimal(3, valor);
-            ps.setString(4, descricao);
-            ps.executeUpdate();
-        }
-    }
+			ps.setString(1, numeroConta);
 
+			ResultSet rs = ps.executeQuery();
+
+			if (rs.next()) {
+				Conta c = new Conta();
+				c.setId(rs.getInt("ID"));
+				c.setUsuarioId(rs.getInt("USUARIO_ID"));
+				c.setNumeroConta(rs.getString("NUMERO_CONTA"));
+				c.setSaldo(rs.getBigDecimal("SALDO"));
+				return c;
+			}
+		}
+		return null;
+	}
+
+	public void registrarExtrato(int contaId, String tipo, BigDecimal valor, String descricao) throws Exception {
+		String sql = "INSERT INTO EXTRATOS (CONTA_ID, TIPO, VALOR, DESCRICAO) VALUES (?, ?, ?, ?)";
+
+		try (Connection con = getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+
+			ps.setInt(1, contaId);
+			ps.setString(2, tipo);
+			ps.setBigDecimal(3, valor);
+			ps.setString(4, descricao);
+			ps.executeUpdate();
+		}
+	}
+
+	public void atualizarSaldo(Conta conta) throws Exception {
+		String sql = "UPDATE CONTAS SET SALDO=? WHERE ID=?";
+
+		try (Connection con = getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+
+			ps.setBigDecimal(1, conta.getSaldo());
+			ps.setInt(2, conta.getId());
+			ps.executeUpdate();
+		}
+	}
 
 }

@@ -1,7 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+
 <%@ page
-	import="edu.ifsp.fintech.modelo.Usuario,edu.ifsp.fintech.modelo.Conta"%>
+	import="
+    java.util.*,
+    edu.ifsp.fintech.modelo.Parcela,
+    edu.ifsp.fintech.modelo.Usuario,
+    edu.ifsp.fintech.modelo.Conta
+"%>
 
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -23,7 +29,7 @@ Usuario u = (Usuario) session.getAttribute("usuarioLogado");
 Conta c = (Conta) session.getAttribute("contaLogada");
 
 if (u == null || c == null) {
-    response.sendRedirect("Login.jsp");
+    response.sendRedirect("paginas/Login.jsp");
     return;
 }
 %>
@@ -58,48 +64,67 @@ if (u == null || c == null) {
 		</div>
 	</div>
 
-	<div class="max-w-md mx-auto pt-12">
+	<div class="max-w-5xl mx-auto pt-12">
 
 		<div class="card bg-base-100 shadow-xl">
-			<div class="card-body space-y-6">
+			<div class="card-body space-y-8">
 
 				<div class="flex flex-col gap-2">
-					<a href="Index.jsp"
+					<a href="<%= request.getContextPath() %>/paginas/Index.jsp"
 						class="btn btn-ghost btn-sm gap-2 text-primary w-fit"> <svg
 							xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
 							viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round"
-								stroke-width="2" d="M15 19l-7-7 7-7" />
-          </svg> Voltar
+                        <path stroke-linecap="round"
+								stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg> Voltar
 					</a>
 
-					<h2 class="text-3xl font-bold text-primary">Saque</h2>
+					<h2 class="text-3xl font-bold text-primary">Faturas</h2>
 				</div>
 
-				<form action="../sacar" method="post" class="space-y-4">
+				<div class="overflow-x-auto">
+					<table class="table table-zebra w-full">
+						<thead>
+							<tr>
+								<th>Parcela</th>
+								<th>Valor</th>
+								<th>Vencimento</th>
+								<th>Status</th>
+								<th></th>
+							</tr>
+						</thead>
 
-					<div>
-						<label class="label"> <span class="label-text">Valor</span>
-						</label> <input type="number" step="0.01" name="valor"
-							class="input input-bordered w-full" required />
-					</div>
+						<tbody>
+							<%
+                        List<Parcela> parcelas =
+                            (List<Parcela>) request.getAttribute("parcelas");
 
-					<button type="submit" class="btn btn-primary w-full">
-						Confirmar Saque</button>
-				</form>
-
-				<% if ("1".equals(request.getParameter("sucesso"))) { %>
-				<p class="text-success text-center">Saque realizado com sucesso!
-				</p>
-				<% } %>
-
-				<% if ("1".equals(request.getParameter("erroSaldo"))) { %>
-				<p class="text-error text-center">Saldo insuficiente!</p>
-				<% } %>
-
-				<% if ("1".equals(request.getParameter("erro"))) { %>
-				<p class="text-error text-center">Erro ao realizar saque!</p>
-				<% } %>
+                        if (parcelas != null && !parcelas.isEmpty()) {
+                            for (Parcela p : parcelas) {
+                    %>
+							<tr>
+								<td><%= p.getNumero() %></td>
+								<td>R$ <%= p.getValor() %></td>
+								<td><%= p.getDataVencimento() %></td>
+								<td><span class="badge badge-warning"> PENDENTE </span></td>
+								<td><a
+									href="<%= request.getContextPath() %>/pagar-fatura?id=<%= p.getId() %>"
+									class="btn btn-sm btn-primary"> Pagar </a></td>
+							</tr>
+							<%
+                            }
+                        } else {
+                    %>
+							<tr>
+								<td colspan="5" class="text-center text-error">Nenhuma
+									fatura pendente.</td>
+							</tr>
+							<%
+                        }
+                    %>
+						</tbody>
+					</table>
+				</div>
 
 			</div>
 		</div>

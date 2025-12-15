@@ -7,9 +7,11 @@ import java.util.List;
 
 import edu.ifsp.fintech.modelo.Conta;
 import edu.ifsp.fintech.modelo.Emprestimo;
+import edu.ifsp.fintech.modelo.Parcela;
 import edu.ifsp.fintech.modelo.SimulacaoEmprestimo;
 import edu.ifsp.fintech.persistencia.ContaDAO;
 import edu.ifsp.fintech.persistencia.EmprestimoDAO;
+import edu.ifsp.fintech.persistencia.ParcelaDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -120,7 +122,30 @@ public class EmprestimoServlet extends HttpServlet {
         EmprestimoDAO emprestimoDAO = new EmprestimoDAO();
         ContaDAO contaDAO = new ContaDAO();
 
-        emprestimoDAO.salvar(emprestimo);
+        int emprestimoId = emprestimoDAO.salvar(emprestimo);
+
+        BigDecimal valorParcela =
+            valorTotal.divide(
+                BigDecimal.valueOf(parcelas),
+                2,
+                java.math.RoundingMode.HALF_UP
+            );
+
+        ParcelaDAO parcelaDAO = new ParcelaDAO();
+
+        for (int i = 1; i <= parcelas; i++) {
+            Parcela p = new Parcela();
+            p.setEmprestimoId(emprestimoId);
+            p.setNumero(i);
+            p.setValor(valorParcela);
+            p.setDataVencimento(
+                emprestimo.getDataContratacao().plusMonths(i)
+            );
+            p.setStatus("PENDENTE");
+
+            parcelaDAO.salvar(p);
+        }
+
 
         BigDecimal novoSaldo = conta.getSaldo().add(valor);
         contaDAO.atualizarSaldo(conta.getId(), novoSaldo);

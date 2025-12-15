@@ -1,54 +1,77 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="pt-br">
 
 <head>
 <meta charset="UTF-8">
-<title>Fintech Bit Pay - Login</title>
+<title>Bit Pay</title>
 
-<link href="https://cdn.jsdelivr.net/npm/daisyui@4.7.2/dist/full.min.css" rel="stylesheet" />
+<link rel="icon" type="image/png" sizes="32x32"
+	href="<%= request.getContextPath() %>/paginas/imgs/favicon-32x32.png">
+
+<link
+	href="https://cdn.jsdelivr.net/npm/daisyui@4.7.2/dist/full.min.css"
+	rel="stylesheet" />
 <script src="https://cdn.tailwindcss.com"></script>
-
 </head>
 
 <body class="bg-base-200 min-h-screen flex items-center justify-center">
 
-  <div class="card w-full max-w-sm shadow-xl bg-base-100">
-    <div class="card-body">
+	<div
+		class="card w-full max-w-sm bg-base-100 shadow-xl relative rounded-2xl">
 
-      <h2 class="text-3xl font-bold text-center mb-4 text-primary">
-        <a href="Home.jsp">Bit Pay</a>
-      </h2>
+		<!-- Header do card -->
+		<div class="relative flex items-center justify-center h-14 mb-2">
 
-      <form action="../login" method="post" class="space-y-4">
+			<a href="Home.jsp"
+				class="absolute left-4 btn btn-ghost btn-sm btn-circle text-primary">
+				<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+					viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round"
+						stroke-width="2" d="M15 19l-7-7 7-7" />
+      </svg>
+			</a>
 
-        <label class="form-control">
-          <span class="label-text">Email</span>
-          <input name="email" type="email" required class="input input-bordered" />
-        </label>
+			<h2 class="text-3xl font-extrabold text-primary tracking-wide">
+				Bit Pay</h2>
 
-        <label class="form-control">
-          <span class="label-text">Senha</span>
-          <input name="senha" type="password" required class="input input-bordered" />
-        </label>
+		</div>
 
-        <button type="submit" class="btn btn-primary w-full mt-2">Entrar</button>
-      </form>
+		<div class="card-body pt-4 px-6 pb-6">
 
-      <div class="text-center mt-4 text-sm text-base-content/70">
-        Não tem conta? <a href="CadastrarConta.jsp" class="link link-primary font-medium"> Criar conta </a>
-      </div>
+			<form action="../login" method="post" class="space-y-4">
 
-      <% if (request.getParameter("erro") != null) { %>
-      <p class="text-error text-center mt-3">Usuário ou senha inválidos</p>
-      <% } %>
+				<label class="form-control"> <span class="label-text">Email</span>
+					<input name="email" type="email" required
+					class="input input-bordered h-10 text-sm" />
+				</label> <label class="form-control"> <span class="label-text">Senha</span>
+					<input name="senha" type="password" required
+					class="input input-bordered h-10 text-sm" />
+				</label>
 
-      <% if (request.getParameter("sucesso") != null) { %>
-      <p class="text-success text-center mt-3">Conta criada com sucesso! Faça login.</p>
-      <% } %>
+				<button type="submit" class="btn btn-primary w-full mt-2">
+					Entrar</button>
 
-    </div>
-  </div>
+			</form>
+
+			<div class="text-center mt-4 text-sm text-base-content/70">
+				Não tem conta? <a href="CadastrarConta.jsp"
+					class="link link-primary font-medium"> Criar conta </a>
+			</div>
+
+			<% if (request.getParameter("erro") != null) { %>
+			<p class="text-error text-center mt-3">Usuário ou senha inválidos
+			</p>
+			<% } %>
+
+			<% if (request.getParameter("sucesso") != null) { %>
+			<p class="text-success text-center mt-3">Conta criada com
+				sucesso! Faça login.</p>
+			<% } %>
+
+		</div>
+	</div>
 
 </body>
 </html>
