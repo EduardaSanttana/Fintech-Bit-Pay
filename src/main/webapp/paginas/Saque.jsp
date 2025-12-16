@@ -7,13 +7,19 @@
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
-<title>Bit Pay</title>
+<title>Bit Pay - Transferência</title>
 <link rel="icon" type="image/png" sizes="32x32" href="<%= request.getContextPath() %>/paginas/imgs/favicon-32x32.png">
 
 <link
 	href="https://cdn.jsdelivr.net/npm/daisyui@4.7.2/dist/full.min.css"
 	rel="stylesheet" />
 <script src="https://cdn.tailwindcss.com"></script>
+
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+	integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+	crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 </head>
 
 <body class="bg-base-200 min-h-screen">
@@ -26,38 +32,43 @@ if (u == null || c == null) {
     response.sendRedirect("Login.jsp");
     return;
 }
+
+String primeiraLetra = u.getNome().substring(0, 1).toUpperCase();
 %>
 
-	<div class="navbar bg-base-100 shadow">
+	<div class="navbar bg-base-100 shadow sticky top-0 z-50">
 		<div class="flex-1">
 			<a class="btn btn-ghost normal-case text-2xl text-primary font-bold">
 				Bit Pay </a>
 		</div>
 
-		<div class="flex-none gap-4 font-medium items-center">
-			<a href="${pageContext.request.contextPath}/paginas/Index.jsp"
-				class="btn btn-ghost">Home</a>
+		<div class="flex-none gap-3 font-medium items-center">
+			<a class="btn btn-ghost btn-sm"
+				href="${pageContext.request.contextPath}/paginas/Index.jsp"> 
+                <i class="fas fa-home mr-1"></i> Home
+			</a>
 
 			<div class="dropdown dropdown-end">
-				<label tabindex="0"
-					class="cursor-pointer hover:opacity-80 transition">
+				<label tabindex="0" class="cursor-pointer">
 					<div class="avatar placeholder">
 						<div class="bg-primary text-primary-content rounded-full w-10">
-							<span class="text-sm font-bold"> <%= u.getNome().substring(0,1).toUpperCase() %>
+							<span class="font-bold"> <%=primeiraLetra%>
 							</span>
 						</div>
 					</div>
 				</label>
 
 				<ul tabindex="0"
-					class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-44 mt-3">
-					<li><a href="AlterarDadosUsuario.jsp">Editar dados</a></li>
-					<li><a href="../logout" class="text-error">Sair</a></li>
+					class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-48 mt-3 z-[1]">
+					<li class="menu-title text-base-content/70">Conta #<%=c.getNumeroConta()%></li>
+					<li><a href="AlterarDadosUsuario.jsp"><i
+							class="fas fa-user-edit"></i> Editar dados</a></li>
+					<li><a href="../logout" class="text-error"><i
+							class="fas fa-sign-out-alt"></i> Sair</a></li>
 				</ul>
 			</div>
 		</div>
 	</div>
-
 	<div class="max-w-md mx-auto pt-12">
 
 		<div class="card bg-base-100 shadow-xl">

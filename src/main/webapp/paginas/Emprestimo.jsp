@@ -16,33 +16,39 @@
 	href="https://cdn.jsdelivr.net/npm/daisyui@4.7.2/dist/full.min.css"
 	rel="stylesheet" />
 <script src="https://cdn.tailwindcss.com"></script>
+
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+	integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+	crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
-<body class="bg-base-200 min-h-screen">
+<body class="bg-base-200 min-h-screen pb-16">
 
 	<%
-Usuario u = (Usuario) session.getAttribute("usuarioLogado");
-Conta c = (Conta) session.getAttribute("contaLogada");
+	Usuario u = (Usuario) session.getAttribute("usuarioLogado");
+	Conta c = (Conta) session.getAttribute("contaLogada");
 
-if (u == null || c == null) {
-    response.sendRedirect("paginas/Login.jsp");
-    return;
-}
-%>
+	if (u == null || c == null) {
+		response.sendRedirect("paginas/Login.jsp");
+		return;
+	}
+	%>
 
-	<div class="navbar bg-base-100 shadow">
+	<div class="navbar bg-base-100 shadow sticky top-0 z-50">
 		<div class="flex-1">
 			<a class="btn btn-ghost normal-case text-2xl text-primary font-bold">
 				Bit Pay </a>
 		</div>
 
 		<div class="flex-none gap-4 font-medium items-center">
-			<a href="${pageContext.request.contextPath}/paginas/Index.jsp"
-				class="btn btn-ghost">Home</a>
+			<a class="btn btn-ghost btn-sm"
+				href="${pageContext.request.contextPath}/paginas/Index.jsp"> <i
+				class="fas fa-home mr-1"></i> Home
+			</a>
 
 			<div class="dropdown dropdown-end">
-				<label tabindex="0"
-					class="cursor-pointer hover:opacity-80 transition">
+				<label tabindex="0" class="cursor-pointer">
 					<div class="avatar placeholder">
 						<div class="bg-primary text-primary-content rounded-full w-10">
 							<span class="text-sm font-bold"> <%= u.getNome().substring(0,1).toUpperCase() %>
@@ -60,54 +66,45 @@ if (u == null || c == null) {
 		</div>
 	</div>
 
-	<div class="max-w-6xl mx-auto pt-12">
-		<div class="card bg-base-100 border border-base-300 rounded-2xl">
-			<div class="card-body space-y-6">
+	<div class="max-w-6xl mx-auto pt-12 px-4">
 
-				<div class="flex items-center gap-4">
-					<a href="<%= request.getContextPath() %>/paginas/Index.jsp"
-						class="btn btn-ghost btn-sm gap-2 text-primary"> <svg
-							xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
-							viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round"
-								stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-                    </svg> Voltar
-					</a>
-				</div>
+		<div class="card bg-base-100 shadow-xl rounded-2xl">
+			<div class="card-body space-y-8">
+
+				<a href="paginas/Index.jsp"
+					class="btn btn-ghost btn-sm gap-2 text-primary w-fit"> <i
+					class="fas fa-arrow-left"></i> Voltar
+				</a>
 
 				<h2 class="text-3xl font-bold text-primary">Empréstimos</h2>
 
 				<%
-                List<Emprestimo> emprestimos =
-                    (List<Emprestimo>) request.getAttribute("emprestimos");
+				List<Emprestimo> emprestimos =
+					(List<Emprestimo>) request.getAttribute("emprestimos");
 
-                boolean temEmprestimos =
-                    emprestimos != null && !emprestimos.isEmpty();
-            %>
+				boolean temEmprestimos =
+					emprestimos != null && !emprestimos.isEmpty();
+				%>
 
-				<!-- TABS -->
 				<div role="tablist" class="tabs tabs-bordered">
 
 					<input type="radio" name="emprestimoTabs" role="tab"
-						class="tab font-medium" aria-label="Meus Empréstimos"
+						class="tab font-semibold" aria-label="Meus Empréstimos"
 						<%= temEmprestimos ? "checked" : "" %> />
 
 					<div role="tabpanel" class="tab-content pt-6">
 
-						<%
-                        if (!temEmprestimos) {
-                    %>
+						<% if (!temEmprestimos) { %>
 						<div class="alert alert-info">
-							<span>Você ainda não possui empréstimos contratados.</span>
+							<i class="fas fa-info-circle"></i> <span>Você ainda não
+								possui empréstimos contratados.</span>
 						</div>
-						<%
-                        } else {
-                    %>
+						<% } else { %>
 
 						<div class="overflow-x-auto">
-							<table class="table table-zebra">
+							<table class="table table-zebra w-full">
 								<thead>
-									<tr>
+									<tr class="text-primary">
 										<th>Data</th>
 										<th>Valor</th>
 										<th>Parcelas</th>
@@ -122,10 +119,11 @@ if (u == null || c == null) {
 										<td><%= e.getDataContratacao() %></td>
 										<td>R$ <%= e.getValor() %></td>
 										<td><%= e.getParcelas() %></td>
-										<td><%= e.getTaxaJuros() %></td>
+										<td><%= e.getTaxaJuros() %>%</td>
 										<td class="font-semibold text-primary">R$ <%= e.getValorTotal() %>
 										</td>
-										<td><span class="badge badge-success"> <%= e.getStatus() %>
+										<td><span class="badge badge-success badge-outline">
+												<%= e.getStatus() %>
 										</span></td>
 									</tr>
 									<% } %>
@@ -133,36 +131,35 @@ if (u == null || c == null) {
 							</table>
 						</div>
 
-						<%
-                        }
-                    %>
+						<% } %>
 
 					</div>
 
 					<input type="radio" name="emprestimoTabs" role="tab"
-						class="tab font-medium" aria-label="Simulação"
+						class="tab font-semibold" aria-label="Simulação"
 						<%= temEmprestimos ? "" : "checked" %> />
 
 					<div role="tabpanel" class="tab-content pt-6">
 
 						<form action="<%= request.getContextPath() %>/emprestimos"
-							method="post" class="space-y-4 max-w-md">
+							method="post"
+							class="max-w-md mx-auto bg-base-200 p-8 rounded-2xl space-y-5">
 
 							<input type="hidden" name="acao" value="simular" />
 
 							<div>
-								<label class="label"> <span class="label-text">Valor</span>
-								</label> <input type="number" step="0.01" name="valor"
-									class="input input-bordered w-full" required>
+								<label class="label font-semibold">Valor do empréstimo</label> <input
+									type="number" step="0.01" name="valor"
+									class="input input-bordered w-full text-lg" required>
 							</div>
 
 							<div>
-								<label class="label"> <span class="label-text">Parcelas</span>
-								</label> <input type="number" name="parcelas"
-									class="input input-bordered w-full" required>
+								<label class="label font-semibold">Número de parcelas</label> <input
+									type="number" name="parcelas"
+									class="input input-bordered w-full text-lg" required>
 							</div>
 
-							<button type="submit" class="btn btn-primary w-full">
+							<button type="submit" class="btn btn-primary w-full text-lg">
 								Simular Empréstimo</button>
 
 						</form>
