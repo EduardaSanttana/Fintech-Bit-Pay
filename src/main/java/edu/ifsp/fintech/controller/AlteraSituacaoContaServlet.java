@@ -31,7 +31,7 @@ public class AlteraSituacaoContaServlet extends HttpServlet {
 
         } catch (Exception e) {
             e.printStackTrace();
-            response.sendRedirect("paginas/AprovarConta.jsp?erroMsg=" + e.getMessage());
+            response.sendRedirect("paginas/IndexColaborador.jsp?erroMsg=" + e.getMessage());
         }
     }
 }

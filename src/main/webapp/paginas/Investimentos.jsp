@@ -77,7 +77,7 @@
 					class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-48 mt-3 z-[1]">
 					<li class="menu-title text-base-content/70">Conta #<%= c.getNumeroConta() %>
 					</li>
-					<li><a href="AlterarDadosUsuario.jsp"> <i
+					<li><a href="paginas/AlterarDadosUsuario.jsp"> <i
 							class="fas fa-user-edit"></i> Editar dados
 					</a></li>
 					<li><a href="../logout" class="text-error"> <i
