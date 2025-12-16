@@ -40,12 +40,10 @@ public class LoginUsuarioServlet extends HttpServlet {
                         return;
                     }
 
-                    // SALVAR NA SESSÃO
                     request.getSession().setAttribute("usuarioLogado", usuario);
                     request.getSession().setAttribute("contaLogada", conta);
                     request.getSession().setAttribute("tipoUsuario", 1);
 
-                    // ⭐ ESSA LINHA É O QUE FALTAVA !!!
                     request.getSession().setAttribute("idConta", conta.getId());
 
                     response.sendRedirect("paginas/Index.jsp");

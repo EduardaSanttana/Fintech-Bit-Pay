@@ -10,8 +10,7 @@
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
-<title>Bit Pay</title>
-<link rel="icon" type="image/png" sizes="32x32" href="<%= request.getContextPath() %>/paginas/imgs/favicon-32x32.png">
+<title>Fintech Bit Pay - Empréstimos</title>
 
 <link
 	href="https://cdn.jsdelivr.net/npm/daisyui@4.7.2/dist/full.min.css"
@@ -61,8 +60,7 @@ if (u == null || c == null) {
 		</div>
 	</div>
 
-	<div class="max-w-xl mx-auto pt-12">
-
+	<div class="max-w-6xl mx-auto pt-12">
 		<div class="card bg-base-100 border border-base-300 rounded-2xl">
 			<div class="card-body space-y-6">
 
@@ -87,6 +85,7 @@ if (u == null || c == null) {
                     emprestimos != null && !emprestimos.isEmpty();
             %>
 
+				<!-- TABS -->
 				<div role="tablist" class="tabs tabs-bordered">
 
 					<input type="radio" name="emprestimoTabs" role="tab"
@@ -147,7 +146,7 @@ if (u == null || c == null) {
 					<div role="tabpanel" class="tab-content pt-6">
 
 						<form action="<%= request.getContextPath() %>/emprestimos"
-							method="post" class="space-y-4 max-w-xl">
+							method="post" class="space-y-4 max-w-md">
 
 							<input type="hidden" name="acao" value="simular" />
 

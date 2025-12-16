@@ -23,10 +23,9 @@ public class CadastroUsuarioServlet extends HttpServlet {
         Usuario u = new Usuario();
         u.setNome(request.getParameter("nome"));
         u.setEmail(request.getParameter("email"));
-
         String senha = request.getParameter("senha");
-        u.setSenha(Criptografia.md5(senha));
-
+        String senhaMD5 = Criptografia.md5(senha);
+        u.setSenha(senhaMD5);
         u.setCpf(request.getParameter("cpf"));
         u.setDataNascimento(LocalDate.parse(request.getParameter("dataNascimento")));
         u.setLogradouro(request.getParameter("logradouro"));
@@ -34,28 +33,26 @@ public class CadastroUsuarioServlet extends HttpServlet {
         u.setBairro(request.getParameter("bairro"));
         u.setCidade(request.getParameter("cidade"));
         u.setEstado(request.getParameter("estado"));
+
         u.setTelefone(request.getParameter("telefone"));
 
         try {
             UsuarioDAO usuarioDAO = new UsuarioDAO();
 
             if (usuarioDAO.existeEmailOuCpf(u.getEmail(), u.getCpf())) {
-                response.sendRedirect(
-                    "paginas/CadastrarConta.jsp?erroMsg=Email ou CPF já cadastrados"
-                );
+                response.sendRedirect("paginas/CadastrarConta.jsp?erroMsg=Email ou CPF já cadastrados.");
                 return;
             }
 
             usuarioDAO.salvar(u);
+
             new ContaDAO().criarConta(u.getId());
 
-            response.sendRedirect("paginas/Login.jsp?sucesso=true");
+            response.sendRedirect("paginas/Login.jsp?sucesso=1");
 
         } catch (Exception e) {
             e.printStackTrace();
-            response.sendRedirect(
-                "paginas/CadastrarConta.jsp?erroMsg=Erro ao cadastrar usuário"
-            );
+            response.sendRedirect("paginas/CadastrarConta.jsp?erroMsg=" + e.getMessage());
         }
     }
 }
