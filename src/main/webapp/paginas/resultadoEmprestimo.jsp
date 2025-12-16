@@ -12,6 +12,9 @@
 <meta charset="UTF-8">
 <title>Bit Pay</title>
 
+<link rel="icon" type="image/png" sizes="32x32"
+	href="<%= request.getContextPath() %>/paginas/imgs/favicon-32x32.png">
+
 <link
 	href="https://cdn.jsdelivr.net/npm/daisyui@4.7.2/dist/full.min.css"
 	rel="stylesheet" />
